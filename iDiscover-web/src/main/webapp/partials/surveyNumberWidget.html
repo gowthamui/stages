@@ -1,0 +1,8 @@
+<div>
+    <div  ng-show="valueDefSummary.lookupGroupSummary!=null">
+        <input type="number" ng-model-onblur step="any" ng-model="valueSummary.numberValue" style="width: 120px;float: left;margin-right: 5px" ng-change="recordAudit()">
+        <select ng-model="valueSummary.lookupValueSummary.id" ng-options="i.id as i.name for i in data.items" style="width: 205px; margin-right: 5px" ng-change="recordAudit()"></select>
+        <input type="text" ng-show="lookupAllowsText()" ng-model="valueSummary.otherValue" ng-model-onblur style="width: 170px" ng-change="recordAudit()">
+    </div>
+    <input ng-show="valueDefSummary.lookupGroupSummary==null" ng-model-onblur type="number" step="any" ng-model="valueSummary.numberValue"  style="width: 120px;" ng-change="recordAudit()">
+</div>

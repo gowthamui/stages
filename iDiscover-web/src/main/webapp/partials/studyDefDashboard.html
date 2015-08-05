@@ -1,0 +1,27 @@
+<div class="container-fluid">
+	<div class="pull-right btn-group" style="margin-top: 15px">
+        <a class="btn" ng-href="{{exportDataDictionaryLink()}}" target="_blank" ng-disabled="!canExportDataDictionary()" >Export Data Dictionary</a>
+        <a class="btn"  ng-href="{{exportDeIdentifiedDataLink()}}" target="_blank"  ng-disabled="!canExportDeIdentifiedData()" ng-show="showExportDeIdentifiedData()">Export De-Identified Data</a>
+        <a class="btn"  ng-href="{{exportDataLink()}}" target="_blank"  ng-disabled="!canExportData()" ng-show="showExportData()">Export Data</a>
+    </div>
+    <ul class="breadcrumb">
+    	<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+    </ul>
+    <div loading-control not-loading-title="title" is-loading="processing"></div>
+	<div class="gridContainer" style="display: -webkit-flex;-webkit-flex-direction:row;" ng-style="{visibility:processing?'hidden':'visible'}">
+		<div style="-webkit-flex:1;border-radius: 2px; border: 1px solid #e0e0e0;max-width: 275px;overflow-y: auto">
+			<ul class="nav nav-list">
+				<li class="nav-header">Organizations</li>
+				<li x-ng-repeat="organization in organizations | orderBy:'name'" x-ng-class="{active: selectedOrganization.id==organization.id}">
+					<a href="" x-ng-click="selectOrganization(organization)">{{organization.name}}</a>
+					<ul class="nav nav-list">
+						<li x-ng-repeat="study in organization.studies | orderBy:'name'" x-ng-class="{active: selectedItem.id==study.id}">
+							<a href="" x-ng-click="onItemSelected(study)">{{study.name}}</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div style="display:-webkit-flex;-webkit-flex-direction:row;-webkit-flex:1;" x-ng-include="dashboard"></div>
+	</div>
+</div>

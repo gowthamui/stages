@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<users>
+    <user>
+        <iv-user>mhebert</iv-user>
+        <iv-user-l>unitnumber=999999999,ou=mspr,ou=ihcpeople,o=ihc</iv-user-l>
+        <ih-first-name>Matt</ih-first-name>
+        <ih-last-name>User</ih-last-name>
+        <ih-middle-name></ih-middle-name>
+        <ih-full-name>Test User</ih-full-name>
+        <ih-preferred-name>Testing User</ih-preferred-name>
+        <ih-telephone-number>801-442-0000</ih-telephone-number>
+        <ih-email>Test.User@imail.org</ih-email>
+        <ih-access-list>VPN::Internet::Proxy</ih-access-list>
+        <iv-remote-address>192.168.0.1</iv-remote-address>
+    </user>
+    <user>
+        <iv-user>mhebert2</iv-user>
+        <iv-user-l>unitnumber=999999999,ou=mspr,ou=ihcpeople,o=ihc</iv-user-l>
+        <ih-first-name>Matt</ih-first-name>
+        <ih-last-name>User</ih-last-name>
+        <ih-middle-name></ih-middle-name>
+        <ih-full-name>Test User</ih-full-name>
+        <ih-preferred-name>Testing User</ih-preferred-name>
+        <ih-telephone-number>801-442-0000</ih-telephone-number>
+        <ih-email>Test.User@imail.org</ih-email>
+        <ih-access-list>VPN::Internet::Proxy</ih-access-list>
+        <iv-remote-address>192.168.0.1</iv-remote-address>
+    </user>
+    <user>
+        <iv-user>kwagner1</iv-user>
+        <iv-user-l>unitnumber=999999998,ou=mspr,ou=ihcpeople,o=ihc</iv-user-l>
+        <ih-first-name>Test</ih-first-name>
+        <ih-last-name>User2</ih-last-name>
+        <ih-middle-name>B</ih-middle-name>
+        <ih-full-name>Test B User</ih-full-name>
+        <ih-preferred-name></ih-preferred-name>
+        <ih-telephone-number>801-442-0001</ih-telephone-number>
+        <ih-email>Test.User2@imail.org</ih-email>
+        <ih-access-list>Internet::Proxy</ih-access-list>
+        <iv-remote-address>192.168.1.0</iv-remote-address>
+    </user>
+    <user>
+        <iv-user>itest</iv-user>
+        <iv-user-l>unitnumber=999999999,ou=mspr,ou=ihcpeople,o=ihc</iv-user-l>
+        <ih-first-name>iDiscoverApprover</ih-first-name>
+        <ih-last-name>Test</ih-last-name>
+        <ih-middle-name></ih-middle-name>
+        <ih-full-name>iDiscover Approver</ih-full-name>
+        <ih-preferred-name>Testing User</ih-preferred-name>
+        <ih-telephone-number>801-442-0000</ih-telephone-number>
+        <ih-email>Test.User@imail.org</ih-email>
+        <ih-access-list>VPN::Internet::Proxy</ih-access-list>
+        <iv-remote-address>192.168.0.1</iv-remote-address>
+    </user>
+    <user>
+        <iv-user>itest1</iv-user>
+        <iv-user-l>unitnumber=999999999,ou=mspr,ou=ihcpeople,o=ihc</iv-user-l>
+        <ih-first-name>iDiscoverCoordinator</ih-first-name>
+        <ih-last-name>Test</ih-last-name>
+        <ih-middle-name></ih-middle-name>
+        <ih-full-name>iDiscover Coordinator</ih-full-name>
+        <ih-preferred-name>Testing User</ih-preferred-name>
+        <ih-telephone-number>801-442-0000</ih-telephone-number>
+        <ih-email>Test.User@imail.org</ih-email>
+        <ih-access-list>VPN::Internet::Proxy</ih-access-list>
+        <iv-remote-address>192.168.0.1</iv-remote-address>
+    </user>
+
+    <user>
+        <iv-user>tkedvals</iv-user>
+        <iv-user-l>unitnumber=999999999,ou=mspr,ou=ihcpeople,o=ihc</iv-user-l>
+        <ih-first-name>iDiscoverCoordinator</ih-first-name>
+        <ih-last-name>Tonya</ih-last-name>
+        <ih-middle-name></ih-middle-name>
+        <ih-full-name>Tonya</ih-full-name>
+        <ih-preferred-name>Tonya User</ih-preferred-name>
+        <ih-telephone-number>801-442-0000</ih-telephone-number>
+        <ih-email>Test.User@imail.org</ih-email>
+        <ih-access-list>VPN::Internet::Proxy</ih-access-list>
+        <iv-remote-address>192.168.0.1</iv-remote-address>
+    </user>
+	<user>
+        <iv-user>epotrich</iv-user>
+        <iv-user-l>unitnumber=999999999,ou=mspr,ou=ihcpeople,o=ihc</iv-user-l>
+        <ih-first-name>Edinardo</ih-first-name>
+        <ih-last-name>Potrich</ih-last-name>
+        <ih-middle-name></ih-middle-name>
+        <ih-full-name>Edinardo Potrich</ih-full-name>
+        <ih-preferred-name>Edinardo Potrich</ih-preferred-name>
+        <ih-telephone-number>801-507-9207</ih-telephone-number>
+        <ih-email>Edinardo.Potrich@imail.org</ih-email>
+        <ih-access-list>VPN::Internet::Proxy</ih-access-list>
+        <iv-remote-address>192.168.0.1</iv-remote-address>
+    </user>
+	<user>
+        <iv-user>gemudire</iv-user>
+        <iv-user-l>unitnumber=999999999,ou=mspr,ou=ihcpeople,o=ihc</iv-user-l>
+        <ih-first-name>gowtham</ih-first-name>
+        <ih-last-name></ih-last-name>
+        <ih-middle-name></ih-middle-name>
+        <ih-full-name>gowthamreddy</ih-full-name>
+        <ih-preferred-name>gowtham</ih-preferred-name>
+        <ih-telephone-number>801-442-0000</ih-telephone-number>
+        <ih-email>gowtham.mudireddy@imail2.org</ih-email>
+        <ih-access-list>VPN::Internet::Proxy</ih-access-list>
+        <iv-remote-address>192.168.0.1</iv-remote-address>
+    </user>
+
+
+</users>

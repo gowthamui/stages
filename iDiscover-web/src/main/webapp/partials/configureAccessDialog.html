@@ -1,0 +1,16 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body" style="height: 400px">
+        <form class="form-horizontal" name="$parent.form" ng-submit="save()">
+            <div class="control-group">
+                <div edit-object-permissions table-name='tableName' query='query' filter-roles='filterByRows'></div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class="btn" ng-click="close()" >Close</button>
+    </div>
+</div>

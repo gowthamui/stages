@@ -1,0 +1,17 @@
+<div xmlns="http://www.w3.org/1999/html">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <div ng-show="processing" style="height: 450px">
+            <i class="fa faon-spinner fa-spin" style="margin: 3px"></i>
+            <span>Loading...</span>
+        </div>
+        <div ng-show="!processing" ng-grid="gridOptions" class="gridStyle" style="height: 450px; width: 870px;"></div>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-primary" ng-disabled="processing" ng-show="canSelect()" ng-click="select()">Select</a>
+        <a class="btn" ng-click="close()" ng-show="!processing">Cancel</a>
+        <a class="btn" ng-disabled="processing" ng-show="processing">Searching...</a>
+    </div>
+</div>

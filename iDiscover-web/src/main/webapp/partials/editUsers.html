@@ -1,0 +1,99 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="$parent.form" style="overflow-y: auto;min-height: 450px">
+            <tabset>
+                <tab heading="User Info">
+                    <div class="control-group">
+                        <label class="control-label">User Id</label>
+
+                        <div class="controls">
+                            <input type="text" required placeholder="Name" ng-model="item.id" ng-disabled="!isNew">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">First Name</label>
+
+                        <div class="controls">
+                            <input type="text" required placeholder="First Name" ng-model="item.firstName">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Last Name</label>
+
+                        <div class="controls">
+                            <input type="text" required placeholder="Last Name" ng-model="item.lastName">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Email</label>
+
+                        <div class="controls">
+                            <input type="text" required placeholder="Email" ng-model="item.email">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Facility No</label>
+
+                        <div class="controls">
+                            <input type="text" placeholder="Facility No" ng-model="item.facilityId">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Department No</label>
+
+                        <div class="controls">
+                            <input type="text" placeholder="Department No" ng-model="item.deptNo">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Update Lock Code</label>
+
+                        <div class="controls">
+                            <input type="password" style="width: 100px"
+                                   placeholder="&#8727;&#8727;&#8727;&#8727;&#8727;&#8727;&#8727;&#8727;"
+                                   ng-model="item.lockCode">
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Notifications">
+                    <div class="control-group">
+
+                        <table class="table table-bordered table-condensed;" style="width:300px">
+                            <thead>
+                            <tr>
+                                <th>Reminder Type</th>
+                                <th style="text-align: center">Send Email?</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in notificationTypes | orderBy:'name'">
+                                <td>{{item.name}}</td>
+                                <td style="text-align: center">
+                                    <input type="checkbox" ng-checked="isEmailOn(item)" ng-click="toggleEmailOn(item)">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </tab>
+            </tabset>
+
+
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" disabled="true" ng-show="processing">Saving...</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()"
+                ng-hide="processing">Save
+        </button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

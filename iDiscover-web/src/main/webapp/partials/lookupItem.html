@@ -1,0 +1,10 @@
+<li recursive ng-class="{'dropdown-submenu':(lookupValue.values.length>0)}">
+    <a ng-click="lookupItemSelected(lookupValue,$event)(lookupValue,$event)" tabindex="-1" style="white-space: normal;min-width: 210px">
+        <span ng-style="{'font-weight':lookupValue.values.length==0 && lookupValue.selected?'bold':'normal'}">{{ getCaption(lookupValue)}}</span>
+        <i class="fa fa-check-square-o" style="float: right;margin-top: 3px" ng-if="lookupValue.values.length==0 && lookupValue.selected"></i>
+    </a>
+
+    <ul class="dropdown-menu" ng-if="lookupValue.values.length>0">
+        <li ng-repeat="subItem in lookupValue.values | orderBy:'displaySeq'" lookup-item-selected="itemSelected" lookup-item lookup-value="subItem"></li>
+    </ul>
+</li>

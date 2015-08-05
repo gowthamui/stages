@@ -1,0 +1,57 @@
+<div hide-modal should-show="dialogVisible">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <div ng-show="loading">
+            Loading...
+        </div>
+        <form class="form-horizontal" name="$parent.form" ng-show="!loading">
+
+            <div class="control-group">
+                <label class="control-label">Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" required placeholder="Title" ng-model="item.name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Organization</label>
+                <div class="controls">
+                    <select required ng-model="item.organizationSummary.id" ng-options="i.id as i.name for i in organizations">
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group" ng-if="item.id>0">
+                <label class="control-label">Closed?</label>
+
+                <div class="controls">
+                    <input type="checkbox" ng-model="item.isClosed" >
+                </div>
+            </div>
+
+            <div class="control-group" ng-if="item.id>0">
+                <label class="control-label">Access</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-small" ng-click="openConfigureAccess()"><i ng-class="accessIcon"/> Configure Access</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group" ng-if="item.id>0">
+                <label class="control-label">Values</label>
+                <div class="controls">
+                    <span lookup-editor lookup-group-id="item.id" lookup-group="item" dialog-changed="dialogChanged"></span>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <a class="btn btn-primary" ng-disabled="form.$invalid || processing || loading" ng-click="save()">Save</a>
+        <a class="btn" ng-click="close()" ng-hide="processing">Cancel</a>
+    </div>
+</div>

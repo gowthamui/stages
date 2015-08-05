@@ -1,0 +1,13 @@
+<span class="alert alert-info" style="display: inline-block;margin-top: 5px">
+<span ng-show="isCondition">Expression must evaluate to true or false. <br><br></span>
+Use the syntax <strong>${FormVariable.ElementVariable}</strong> for variables.  <br>
+If the variable is on the current form you can use the abbreviated syntax <strong>${ElementVariable}</strong>.  <br>
+Use #number,#other,#string suffixes for lookups.<br>    <br>
+Example: ${FormVarName.AmountVarName}+${FormVarName.LookupVarName#number}
+<br><br>
+Special Variables:<br>
+<strong>${studyEnrollment.dateAdded}</strong> = Date participant data initially collected<br>
+<strong>${studyEnrollment.participantStudyId}</strong> = Participant Study ID<br>
+<strong>${studyEnrollment.secondaryStudyId}</strong> = Secondary Study ID<br>
+<strong>${studyEnrollment.empi}</strong> = EMPI<br>
+</span>

@@ -1,0 +1,360 @@
+<div class="container-fluid" >
+<div>
+
+    <div class="pull-right btn-group" style="margin-top: 10px" ng-show="!isLoading && !hasLoadError">
+        <button class="btn" ng-click="reSubmit()" ng-disabled="processing" ng-if="formData && canReSubmit()">Re-Submit for
+            Approval
+        </button>
+        <button class="btn" ng-click="submit()" ng-disabled="processing" ng-if="formData && canSubmit()">Submit for Approval
+        </button>
+        <button class="btn" ng-click="reset()" ng-disabled="processing" ng-if="formData && canReset()">Reset Status</button>
+        <button class="btn" ng-click="approve()" ng-disabled="processing" ng-if="formData && canApprove()"><i
+                ng-class="approvedIcon"></i> Approve
+        </button>
+        <button class="btn" ng-click="deny()" ng-disabled="processing" ng-if="formData && canDeny()"><i ng-class="deniedIcon"></i>
+            Deny
+        </button>
+        <button class="btn" ng-click="revoke()" ng-disabled="processing" ng-if="formData && canRevokeApproval()">Revoke
+            Approval
+        </button>
+
+        <button class="btn" ng-click="toggleChart()" ng-if="hasChartReviewFeature()">
+            <i ng-class="getChartToggleIcon()"></i>
+            <span>Chart Review</span>
+        </button>
+        <button class="btn" ng-click="toggleNavigator()">
+            <i ng-class="getToggleIcon()"></i>
+            <span>Navigator</span>
+        </button>
+        <button class="btn" ng-click="openPrint()" ng-disabled="!canPrint()" ng-if="formData"><i ng-class="printIcon"></i> Print</button>
+        <button class="btn" ng-click="toggleAuditTrail()" ng-if="formData"><i ng-class="getAuditToggleIcon()"></i> Audit Trail</button>
+        <div class="btn-group" ng-if="formData && currentState.data.participantId > 0">
+	       	<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Change Participant <span class="caret"></span></a>
+	       	<ul class="dropdown-menu">
+	       		<li ng-repeat="otherStudyEnrollment in otherStudyEnrollments | orderBy : 'participantSummary.lastName' | filter : {id : '!'+studyEnrollmentId}">
+	       			<a href="" ng-click="openOtherStudyEnrollment(otherStudyEnrollment)">{{otherStudyEnrollment.participantSummary.firstName}} {{otherStudyEnrollment.participantSummary.lastName}}</a>
+	       		</li>
+	       	</ul>
+       </div>
+    </div>
+    <ul class="breadcrumb" ng-show="!isLoading && !hasLoadError">
+        <li><a href="#"><i class="fa fa-home"></i> Home</a> <span class="divider">/</span></li>
+        <li><a ng-href="#/{{enrollmentHref}}">{{enrollmentLink}}</a></li>
+    </ul>
+    <div loading-control not-loading-title="formData.formName || 'Enrollment Summary'" is-loading="isLoading && !hasLoadError"></div>
+    <div style="margin-top: 30px" ng-show="hasLoadError"><span class="alert alert-danger">{{loadErrorMessage}}</span>
+    </div>
+</div>
+
+
+<div class="gridContainer" style="display:-webkit-flex;-webkit-flex-direction:row;">
+<div style="-webkit-flex:1;display:-webkit-flex;-webkit-flex-direction:column;">
+<div ng-show="!isLoading && studyEnrollmentId>0 && !hasLoadError && formData" style="-webkit-flex-shrink:0;max-height: 200px">
+    <table class="table table-condensed table-bordered">
+        <thead>
+        <tr>
+            <th>Study</th>
+            <th>Form ID</th>
+            <th>EMPI</th>
+            <th>Participant Study ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date Added</th>
+            <th>Participant Status</th>
+            <th style="width: 40px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{formData.studyDefSummary.name}}</td>
+            <td>{{formData.studyFormId}}</td>
+            <td>{{formData.studyEnrollmentSummary.participantSummary.idTag}}</td>
+            <td>{{formData.studyEnrollmentSummary.participantStudyId}}</td>
+            <td>{{formData.studyEnrollmentSummary.participantSummary.firstName}}</td>
+            <td>{{formData.studyEnrollmentSummary.participantSummary.lastName}}</td>
+            <td>{{formData.studyEnrollmentSummary.dateAdded | date:'shortDate'}}</td>
+            <td>{{formData.studyEnrollmentSummary.studyEnrollmentStatusSummary.objectStateTypeSummary.name}} <i
+                    ng-class="participantStatusHistoryIcon" ng-click="showParticipantStatusHistory()"
+                    style="cursor: pointer"
+                    ng-if="formData.studyEnrollmentSummary.studyEnrollmentStatusSummary.objectStateTypeSummary"></i>
+            </td>
+            <td>
+                <button class="btn btn-mini btn-info" ng-click="openEnrollmentProperties()">Edit</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div ng-show="!isLoading && studyEnrollmentId>0 && !hasLoadError && !formData" style="-webkit-flex-shrink:0;max-height: 200px">
+    <table class="table table-condensed table-bordered">
+        <thead>
+        <tr>
+            <th>Study</th>
+            <th>EMPI</th>
+            <th>Participant Study ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date Added</th>
+            <th>Participant Status</th>
+            <th style="width: 40px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{formSummary.studyDefSummary.name}}</td>
+            <td>{{formSummary.studyEnrollmentSummary.participantSummary.idTag}}</td>
+            <td>{{formSummary.studyEnrollmentSummary.participantStudyId}}</td>
+            <td>{{formSummary.studyEnrollmentSummary.participantSummary.firstName}}</td>
+            <td>{{formSummary.studyEnrollmentSummary.participantSummary.lastName}}</td>
+            <td>{{formSummary.studyEnrollmentSummary.dateAdded | date:'shortDate'}}</td>
+            <td>{{formSummary.studyEnrollmentSummary.studyEnrollmentStatusSummary.objectStateTypeSummary.name}} <i
+                    ng-class="participantStatusHistoryIcon" ng-click="showParticipantStatusHistory()"
+                    style="cursor: pointer"
+                    ng-if="formData.studyEnrollmentSummary.studyEnrollmentStatusSummary.objectStateTypeSummary"></i>
+            </td>
+            <td>
+                <button class="btn btn-mini btn-info" ng-click="openEnrollmentProperties()">Edit</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div ng-show="!isLoading && !hasLoadError" style="overflow-y: auto;-webkit-flex:1;">
+    <tabset ng-if="formData">
+
+
+        <tab heading="Approval History">
+            <div ng-if="objectStateHistory.length > 0" style="max-height: 200px;overflow: auto; margin-bottom: 10px">
+                <table class="table table-condensed table-bordered" style="margin-bottom: 0px">
+                    <thead>
+                    <tr>
+                        <th>Approval History</th>
+                        <th>Modified By</th>
+                        <th>Modified On</th>
+                        <th>Comments</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in objectStateHistory">
+                        <td>{{item.objectStateTypeSummary.name}}</td>
+                        <td>{{item.createdByUserId}}</td>
+                        <td>{{item.createdDts | date:"short"}}</td>
+                        <td>{{item.comments}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </tab>
+        <tab heading="Tasks">
+            <div style="min-height:75px;max-height: 200px;overflow: auto; margin-bottom: 10px">
+
+                <table class="table table-condensed table-bordered" style="margin-bottom: 0px">
+                    <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Assigned To</th>
+                        <th>Modified On</th>
+                        <th>Status</th>
+                        <th>
+                            <span>Comments</span>
+
+                            <div class="pull-right btn-group">
+                                <button class="btn btn-mini btn-info" ng-click="toggleShowCompletedTasks()">
+                                    <i ng-class="getCompletedTasksIcon()"></i>
+                                    <span>Show Completed</span>
+                                </button>
+                                <button class="btn btn-mini btn-info" ng-click="addTask()" ng-disabled="processing">
+                                    Create Task
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in getTasks(formData.tasks) | orderBy:'-createdDts'">
+                        <td><i ng-class="taskIcon" style="margin-right: 5px"></i><a ng-click="addTask(item,$event)">{{item.title}}</a>
+                        </td>
+                        <td style="width: 100px">{{item.assignedToUserId}}</td>
+                        <td style="width: 125px">{{item.createdDts | date:"short"}}</td>
+                        <td style="width: 100px">{{item.taskStatusSummary.name}}</td>
+                        <td>{{item.comments}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </tab>
+        <tab heading="Participant Study History" ng-if="studyHistory.length>0">
+            <div style="min-height:75px;max-height: 200px;overflow: auto; margin-bottom: 10px">
+                <span ng-show="loadingHistory">Loading History...</span>
+                <table class="table table-condensed table-bordered" style="margin-bottom: 0px"
+                       ng-show="!loadingHistory">
+                    <thead>
+                    <tr>
+                        <th>Study</th>
+                        <th>Principal Investigator</th>
+                        <th>Study Status</th>
+                        <th>Creation Date</th>
+                        <th>IRB#</th>
+                        <th>CTN#</th>
+                        <th>First Admit Date</th>
+                        <th>Last Admit Date</th>
+                        <th>Source</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in studyHistory | orderBy:'-studyCreationDate'">
+                        <td>{{item.studyName}}</td>
+                        <td>{{item.primaryInvestigator}}</td>
+                        <td>{{item.studyStatus}}</td>
+                        <td>{{item.studyCreationDate | date:'short'}}</td>
+                        <td>{{item.irbNumber}}</td>
+                        <td>{{item.nationalClinicalTrialsNumber}}</td>
+                        <td>{{item.firstAdmitDate | date:'short'}}</td>
+                        <td>{{item.lastAdmitDate | date:'short'}}</td>
+                        <td>{{item.dataSource}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </tab>
+    </tabset>
+
+    <table class="table table-condensed table-bordered" ng-show="!formData">
+        <tr class="formDetailHeader">
+            <td>Form</td>
+            <td>Summary</td>
+            <td>Status</td>
+        </tr>
+        <tr ng-repeat="form in formSummary.outline | filter:{level:1}" ng-click="openForm(form,$event)" style="cursor: pointer" class="formSummaryRow">
+            <td>{{form.caption}}</td>
+            <td>
+                <span style="font-style: italic;font-size: 0.75em">{{getFormSubTitle(form)}}</span>
+            </td>
+            <td>
+                <span style="font-weight: bold; font-size: 0.8em">{{getFormStatusLabel(form)}}</span>
+                <i ng-class="getFormStatusIcon(form)" style="vertical-align: middle"></i>
+            </td>
+        </tr>
+    </table>
+
+    <table class="table table-condensed table-bordered" ng-show="formData.elements.length>0">
+
+        <tr ng-repeat="element in formData.elements" ng-show="!isHidden(element)"
+            ng-class="{formDetailHeader:isHeader(element),formDetailSubForm:isSubForm(element),formDetailDescription:isDescription(element)}">
+            <td style="width: 500px" colspan="{{getColumnSpan(element)}}">
+
+                <i ng-if="element.isListItem && formData.canEdit && !isComplete(element.subForm)"
+                   ng-click="deleteListItem(element)" style="float:right;cursor: pointer"
+                   class="fa fa-minus-square"></i>
+
+                <div ng-style="getIndent(element)" ng-click="toggleRow(element)">
+                    <div style="float: left">
+                        <i ng-class="getFolderClass(element)"></i>
+                    </div>
+                    <div style="margin-left: 20px">
+	                    <span ng-if="formData.canEdit && !isComplete(element.subForm) && element.isListItem">
+	                        <span ng-show="!element.isRenamingCaption">{{element.caption}}</span>
+	                        <input
+	                                ng-model-onblur
+	                                ui-event="{blur:'renameListCaption(element,false)'}"
+	                                ng-change="updateListCaption(element)"
+	                                type="text"
+	                                ng-if="element.isRenamingCaption"
+	                                ng-model="element.caption"
+	                                style="width:150px;height: 15px;">
+	                        <a ng-show="!element.isRenamingCaption" style="cursor: pointer;"
+	                           class="formattedValueLink" ng-click="renameListCaption(element,true)">(rename)</a>
+	                        <i ng-if="element.isLoading && !hasLoadError" class="fa fa-spinner fa-spin"
+	                           style="margin: 3px"></i>
+	                    </span>
+	                    <span ng-if="!formData.canEdit || isComplete(element.subForm) || !element.isListItem" tabindex="{{ canToggle(element)?0:-1}}" class="elementHeader">
+	                        <span tooltip="{{element.elementSummary.valueDefSummary.description}}">{{element.elementSummary.valueDefSummary.name}}</span>
+	                        <i ng-if="element.isLoading && !hasLoadError" class="fa fa-spinner fa-spin"></i>
+	                    </span>
+                    </div>
+                </div>
+
+            </td>
+            <td style="width: 20px; text-align: center" ng-if="!isHeader(element)">
+                <i ng-class="getRequiredIcon()"
+                   ng-style="{color:metadataService.isValid(element.currentValueSummary,element.elementSummary.valueDefSummary).hasRequiredError?'red':'black'}"
+                   style="cursor: pointer; font-size: 0.7em"
+                   ng-show="metadataService.isRequired(element.elementSummary.valueDefSummary)" tooltip="Required"></i>
+                <i ng-class="getRequiresInitialsIcon()"
+                   ng-style="{color:metadataService.isValid(element.currentValueSummary,element.elementSummary.valueDefSummary).requiresInitials?'red':'black'}"
+                   style="cursor: pointer; font-size: 0.7em"
+                   ng-show="metadataService.requiresUserInitials(element.elementSummary.valueDefSummary)"
+                   tooltip="Requires Initials"></i>
+                <i class="fa fa-exclamation-triangle" style="color:red;font-size: 0.75em"
+                   ng-show="metadataService.isValid(element.currentValueSummary,element.elementSummary.valueDefSummary).hasValidationErrors"
+                   tooltip="{{metadataService.isValid(element.currentValueSummary,element.elementSummary.valueDefSummary).errorMessage}}"></i>
+
+            </td>
+
+            <td style="min-width: 200px" ng-if="!isHeader(element)">
+                            <span ng-if="isList(element) && formData.canEdit && !isComplete(element.subForm) && element.elementSummary.isOpen && element.isLoaded && !element.isLoading">
+                                <a ng-disabled="processing"
+                                   ng-click="addListItem(element); $event.stopPropagation();"
+                                   style="margin-bottom: 5px" class="btn btn-primary btn-mini">
+                                    <i class="fa fa-plus-square"></i> Add List Item
+                                </a>
+                                <br>
+                            </span>
+
+
+                <div ng-if='element.elementTypeId==2'
+                     is-approver='formData.isApprover'
+                     can-edit='formData.canEdit'
+                     form-element='element'
+                     sub-form='element.subForm'
+                     formatted-value
+                     show-audit-trail='showAuditTrail'
+                     form-state='formData.objectStateTypeSummary'
+                     previous-value-summary="element.previousValueSummary"
+                     value-def-summary='element.elementSummary.valueDefSummary'
+                     is-list-item="element.isListItem"
+                     value-summary="element.currentValueSummary">
+                </div>
+            </td>
+            <td style="width: 150px" ng-if="!isHeader(element)">
+                            <span ui-event="{drop:'dropComment(element,$event)',dragover:'dragoverComment($event)'}">
+                                <i ng-class="getCommentIcon(element)" ng-click="addComment(element)"
+                                   style="cursor: pointer;"></i>
+                                <span class="valueComments">
+                                    {{getTruncatedComments(element.currentValueSummary.comments)}}
+                                </span>
+                            </span>
+            </td>
+            <td style="width: 15px; text-align: center">
+                <span ng-if="!isHeader(element)"><div auto-populate-ctrl element="element" study-form-id="formData.studyFormId"></div></span>
+                <span ng-if="isHeader(element) && $index==0"><div auto-populate-all-ctrl/></span>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+<div style="-webkit-flex:1;max-width: 400px;display:-webkit-flex;-webkit-flex-direction:column;" ng-style="getNavigatorStyle()">
+    <div style="-webkit-flex:2 1;position: relative;" ng-show="navigatorOpen">
+        <div style="position: absolute;top:0;right:0;left:0;bottom:0;margin-bottom: 5px;" class="studyNavigator"
+             participant-schedule study-enrollment-id="studyEnrollmentId" study-def-id="studyDefId">
+        </div>
+    </div>
+    <div style="-webkit-flex:6;position: relative;" ng-show="navigatorOpen">
+        <div style="position: absolute;top:0;right:0;left:0;bottom:0;" class="studyNavigator" study-navigator
+             current-state="currentState" study-def-id="studyDefId" study-enrollment-id="studyEnrollmentId"/>
+    </div>
+
+    <div style="-webkit-flex:1;position: relative;" ng-show="chartOpen">
+        <div style="position: absolute;top:0;right:0;left:0;bottom:0;" class="studyNavigator" chart-review study-def="studyDef" participant-id-tag="formSummary.studyEnrollmentSummary.participantSummary.idTag || formData.studyEnrollmentSummary.participantSummary.idTag">
+
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+</div>
+

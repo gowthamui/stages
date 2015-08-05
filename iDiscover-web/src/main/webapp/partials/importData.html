@@ -1,0 +1,294 @@
+<div class="container-fluid">
+<ul class="breadcrumb">
+    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+</ul>
+<div loading-control not-loading-title="title" is-loading="loading"></div>
+<div class="gridContainer" style="border: 1px solid rgb(176, 176, 176);padding: 10px; overflow-y: auto">
+<form class="form" name="$parent.form">
+<div class="control-group">
+    <label class="control-label">File to import (.csv):</label>
+
+    <div class="controls">
+        <div ng-show="processing">
+            <i class="fa fa-spinner fa-spin pull-left" style="margin: 3px"></i>
+            <span> Processing file...</span>
+        </div>
+        <div ng-show="bytes!=null && !processing">
+            <span style="font-weight: bold">{{fileName}}</span>
+            <span style="font-weight: bold">{{ getNumberOfRecords() }}</span>
+            <button class="btn-mini btn btn-danger" style="margin-left: 5px;margin-right: 5px"
+                    ng-click="clearFileElement($event)">Clear Value
+            </button>
+
+        </div>
+        <input accept=".csv" type="file" file-changed="selectedFileChangedDelegate" file="selectedFile"
+               placeholder="Upload File" ng-show="!processing && !bytes">
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label">Study to import data into:</label>
+
+    <div class="controls">
+        <select required class="input-xxlarge" ng-model="studyDefId"
+                ng-options="i.id as i.name for i in studyDefs | orderBy:'name'">
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label">Participant status:</label>
+
+    <div class="controls">
+
+        <select ng-model="participantStatusId" ng-options="i.id as i.name for i in studyStatuses">
+            <option value="">-- No Mapping --</option>
+        </select>
+    </div>
+</div>
+
+
+<div class="control-group" ng-show="columns.length>0">
+    <label class="control-label"></label>
+
+    <div class="controls">
+        <table class="table table-bordered table-condensed" style="margin-top: 5px;width: auto">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th style="min-width: 400px">Mapped to?</th>
+            </tr>
+
+            </thead>
+            <tbody>
+
+            <tr>
+                <td>
+                    <span>ID Field</span>
+                    <br><br>
+
+                    <label class="checkbox">
+                        <input type="checkbox" ng-model="mapEMPI">
+                        (Use EMPI)
+                    </label>
+                </td>
+                <td>
+
+                    <table class="table table-bordered table-condensed" ng-show="mapEMPI">
+
+                        <tr>
+                            <td colspan="2">
+                                <label class="checkbox">
+                                    <input type="checkbox" ng-model="mapViaAccountNumber">
+                                    Use Account # as key (EMPI will be populated)
+                                </label>
+                            </td>
+                        </tr>
+                        <tr ng-show="mapViaAccountNumber && mapEMPI">
+                            <td>Account #</td>
+                            <td>
+                                <select class="input-medium" ng-model="accountNumber"
+                                        ng-options="i.columnName as i.columnName for i in availableColumns">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr ng-show="mapViaAccountNumber && mapEMPI">
+                            <td>Facility ID</td>
+                            <td>
+                                <select class="input-medium" ng-model="facilityId"
+                                        ng-options="i.columnName as i.columnName for i in availableColumns">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr ng-show="!mapViaAccountNumber ">
+                            <td>
+                                EMPI
+                            </td>
+                            <td>
+                                <select class="input-medium" ng-model="participantIdTag"
+                                        ng-options="i.columnName as i.columnName for i in availableColumns">
+                                </select>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <select ng-show="!mapEMPI" class="input-medium" ng-model="participantIdTag" ng-options="i.columnName as i.columnName for i in availableColumns">
+                    	<option value="">-- No Mapping --</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Participant Study Id</td>
+                <td>
+                    <select class="input-medium" ng-model="participantStudyId"
+                            ng-options="i.columnName as i.columnName for i in availableColumns">
+                        <option value="">-- No Mapping --</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Secondary Study Id</td>
+                <td>
+                    <select class="input-medium" ng-model="secondaryStudyId"
+                            ng-options="i.columnName as i.columnName for i in availableColumns">
+                        <option value="">-- No Mapping --</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Participant First Name</td>
+                <td>
+                    <select class="input-medium" ng-model="participantFirstName"
+                            ng-options="i.columnName as i.columnName for i in participantColumns"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>Participant Middle Name</td>
+                <td>
+                    <select class="input-medium" ng-model="participantMiddleName"
+                            ng-options="i.columnName as i.columnName for i in participantColumns"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>Participant Last Name</td>
+                <td>
+                    <select class="input-medium" ng-model="participantLastName"
+                            ng-options="i.columnName as i.columnName for i in participantColumns"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>Participant Date of Birth</td>
+                <td>
+                    <select class="input-medium" ng-model="participantDateOfBirth"
+                            ng-options="i.columnName as i.columnName for i in participantColumns"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>Participant Email</td>
+                <td>
+                    <select class="input-medium" ng-model="participantEmail"
+                            ng-options="i.columnName as i.columnName for i in participantColumns"></select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="control-group" ng-show="availableColumns.length>0">
+    <label class="control-label"></label>
+
+    <div class="controls">
+        <select style="vertical-align: initial" class="input-medium" ng-model="newColumn"
+                ng-options="i.columnName as i.columnName for i in availableColumns">
+        </select>
+        <button class="btn btn-info btn-small" ng-disabled="!newColumn" ng-click="addColumn()">Add Mapping Column
+        </button>
+        <br>
+
+        <div class="alert alert-info" style="display: inline-block">
+            <strong>Lookup Values:</strong> use 'string' in mapped value to map csv to string value. Use 'number' in
+            mapped value to map csv to number value.<br>
+            <strong>Date Format Example:</strong> yyyy-MM-dd HH:mm:ss<br>
+            <strong>Mapped Value Example:</strong> if value in csv column is 'x' then use 'x' in mapped value to
+            translate into true or false<br>
+            <strong>Condition:</strong> Select the column and the value that must be true in order to import he column.
+            Example: only import date column if ColumnE='x'<br>
+        </div>
+        <div>
+            <div style="clear: both">
+                <div style="float: left;" >
+                    <input type="text" ng-model="mappingName" style="vertical-align: initial;">
+                    <button class="btn btn-primary btn-small" ng-disabled="!mappingName" ng-click="saveMapping()">Save Mapping</button>
+
+                </div>
+                <div style="float: left;margin-left: 20px" ng-show="availableMappings().length>0">
+                    <select style="vertical-align: initial" class="input-medium" ng-model="selectedMapping"
+                            ng-options="i.name as i.name for i in availableMappings()">
+                    </select>
+                    <button class="btn btn-info btn-small" ng-disabled="!selectedMapping" ng-click="loadMapping()">Load
+                        Mapping
+                    </button>
+                </div>
+
+            </div>
+            <div style="clear: both"></div>
+
+            <br>
+            <table class="table table-bordered table-condensed" style="margin-top: 5px;width: auto">
+                <thead>
+                <tr>
+                    <th>Column from file</th>
+                    <th style="min-width: 200px">Mapped to?</th>
+                    <th>Mapped Value</th>
+                    <th>Condition</th>
+                    <th>Date Format</th>
+                    <th style="min-width: 20"></th>
+                    <th style="min-width: 20"></th>
+                </tr>
+
+                </thead>
+                <tbody>
+                <tr ng-repeat="col in columns">
+                    <td>{{col.columnName}}</td>
+                    <td>
+                        <div outline-item-lookup selectable-data-types="selectableDataTypes" study-def-id="studyDefId"
+                             selected-item="col.selectedItem"></div>
+                    </td>
+                    <td>
+                        <input type="text" class="input-medium" ng-model="col.mappedValue">
+                    </td>
+                    <td>
+                        <select class="input-medium" ng-model="col.conditionColumn"
+                                ng-options="i.columnName as i.columnName for i in availableColumns"></select>
+                        <input type="text" class="input-medium" ng-model="col.conditionValue">
+                    </td>
+                    <td>
+                        <input type="text" class="input-medium" ng-model="col.dateFormat">
+                    </td>
+                    <td><i ng-style="eraseVisible(col)" class="fa fa-eraser" style="cursor: pointer"
+                           ng-click="clearItem(col)"></i></td>
+                    <td><i class="fa fa-times" style="cursor: pointer" ng-click="removeColumn(col)"></i></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
+    <div>
+        <button ng-show="!processing" class="btn btn-primary" ng-click="importData()"
+                ng-disabled="$parent.form.$invalid  ||  !isValid()">Import Data
+        </button>
+        <button ng-show="processing" class="btn btn-primary" ng-click="cancelImport()">Processing...Cancel</button>
+
+    </div>
+
+    <div ng-show="completedRows.length>0" style="margin-top:15px">
+        <div style="margin-bottom: 10px">
+            <button class="btn btn-mini btn-info" ng-click="clearResults()">Clear Results</button>
+            <span>{{completionStatus}}</span>
+        </div>
+
+        <table class="table table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>Data</th>
+                <th>Has Error?</th>
+                <th>Error Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in completedRows">
+                <td>{{row.row}}</td>
+                <td>{{row.hasError}}</td>
+                <td>{{row.errorMessage}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+</div>
+</div>

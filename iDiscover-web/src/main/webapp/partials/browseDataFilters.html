@@ -1,0 +1,85 @@
+<div hide-modal should-show="dialogVisible">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body"
+         style="position: absolute; bottom: 75px;left: 15px;right: 15px;top:75px;max-height: inherit;overflow-y: inherit;display: -webkit-flex;flex-direction: row;padding: 0px;padding-bottom: 5px">
+        <div class="gridStyle"
+             style="-webkit-flex:1;max-width: 275px;display:-webkit-flex;-webkit-flex-direction:column ">
+            <div class="dividerHeader" style="padding-bottom: 4px;padding-top: 4px;height: 22px">
+                <div data-ng-show="!loadingOutline">
+                    <button class="btn btn-mini btn-danger" data-ng-disabled="!canDeleteFilter()"
+                            data-ng-click="deleteFilter()"><i class="fa fa-minus-circle"></i> Delete Filter
+                    </button>
+                    <button class="btn btn-mini btn-primary" data-ng-click="addFilter()"><i
+                            class="fa fa-plus-circle"></i>
+                        Add Filter
+                    </button>
+                </div>
+                <div data-ng-show="loadingOutline">
+                    Loading...
+                </div>
+            </div>
+            <ul class="nav nav-list" style="-webkit-flex:1;overflow-y: auto;margin-top: 3px">
+                <!-- ngRepeat: item in outline -->
+                <li x-ng-repeat="item in studyDefFilters.filters" x-ng-class="{active: selectedFilter.id==item.id}">
+                    <a href="" ng-click="filterSelected(item,$event)" style="padding-left: 15px; white-space: nowrap;">
+                        <i class="fa fa-filter" style="margin-top: 3px; cursor: pointer; width: 16px;"></i>
+                        {{item.name}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="gridStyle"
+             style="-webkit-flex:1;display:-webkit-flex;-webkit-flex-direction:column;margin-left: 5px ">
+            <div class="dividerHeader" style="min-height: 20px">
+                <div>
+                    <span x-ng-show="!loadingFilter" class="ng-binding">{{selectedFilter.name}} &nbsp;</span>
+                    <span x-ng-show="loadingFilter" class="ng-hide">Loading...</span>
+                    <span>&nbsp;</span>
+                </div>
+            </div>
+            <form class="form-horizontal" name="$parent.form" ng-show="!loadingFilter && selectedFilter!=null"
+                  style="margin-top: 20px;overflow-y: auto">
+
+                <div class="control-group">
+                    <label class="control-label">Filter Name</label>
+
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" required placeholder="Title"
+                               ng-model="selectedFilter.name">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Form</label>
+
+                    <div class="controls">
+                        <select required class="input-xlarge" ng-model="selectedFilter.form"
+                                ng-options="i.id as i.caption for i in outline" data-ng-change="formChanged()">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Columns</label>
+
+                    <div class="controls">
+                        <div style="width: 80%;height: 400px">
+                            <div ng-grid="gridOptions" class="gridStyle"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+    </div>
+    <div class="modal-footer" style="position: absolute; bottom: 0px;left: 0px;right: 0px">
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">
+            {{alert.msg}}
+        </alert>
+        <a class="btn btn-primary" ng-disabled="processing || loadingFilter" ng-click="save()">Save</a>
+        <a class="btn" ng-click="close()" ng-hide="processing">Cancel</a>
+    </div>
+</div>

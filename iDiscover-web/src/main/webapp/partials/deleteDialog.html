@@ -1,0 +1,17 @@
+<div>
+    <div class="modal-header">
+        <div loading-control not-loading-title="title" is-loading="processing"></div>
+    </div>
+    <div class="modal-body">
+        <span>{{message}}</span>
+        <div>
+            <br>
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" disabled="true" ng-show="processing">Deleting...</button>
+        <button class="btn btn-danger" ng-click="close()" ng-hide="processing">Delete</button>
+        <button class="btn" ng-click="cancel()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

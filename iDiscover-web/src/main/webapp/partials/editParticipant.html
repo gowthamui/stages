@@ -1,0 +1,76 @@
+<div hide-modal should-show="dialogVisible">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="$parent.form" ng-submit="save()" style="min-height: 525px">
+            <div class="control-group">
+                <label class="control-label">EMPI<span data-required-indicator is-required="true"></span></label>
+                <div class="controls">
+                    <input type="text" required placeholder="EMPI" ng-model="item.idTag">
+                    <div participant-lookup dialog-changed="dialogChanged" participant="item"></div>
+                </div>
+
+            </div>
+            <div class="control-group">
+                <label class="control-label">First Name<span data-required-indicator is-required="true"></span></label>
+                <div class="controls">
+                    <input type="text" required placeholder="First Name" ng-model="item.firstName">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Middle Name</label>
+
+                <div class="controls">
+                    <input type="text" placeholder="Middle Name" ng-model="item.middleName">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Last Name<span data-required-indicator is-required="true"></span></label>
+                <div class="controls">
+                    <input type="text" required placeholder="Last Name" ng-model="item.lastName">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Date of Birth</label>
+                <div class="controls">
+                    <input date-fix type="date" placeholder="Date of Birth" date="item.dateOfBirth">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">User Id (ldap)</label>
+                <div class="controls">
+                    <input type="text"  placeholder="User Id" ng-model="item.ldapId">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Email</label>
+                <div class="controls">
+                    <input type="text"  placeholder="Email" ng-model="item.email">
+                </div>
+            </div>
+
+            <div class="control-group" ng-if="item.enrollments.length > 0">
+                <label class="control-label">Participating In</label>
+                <div class="controls">
+                    <div ng-repeat="study in item.enrollments" >
+                        <span class="label" style="margin: 4px">{{study.studyDefName}}</span> <br>
+                    </div>
+                </div>
+            </div>
+
+
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" disabled="true" ng-show="processing">Saving...</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()" ng-hide="processing">Save</button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

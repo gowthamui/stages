@@ -1,0 +1,63 @@
+<div>
+
+    <div >
+
+        <table>
+            <tr>
+                <td style="width:60px">
+                    <span>Group:</span>
+                </td>
+                <td>
+                    <select ng-model="newGroupId" ng-options="i.id as i.name for i in groups | orderBy:['name']"></select>
+                </td>
+                <td style="width:60px;text-align: right">
+                    <span style="margin-right: 5px">Role:</span>
+                </td>
+                <td>
+                    <select ng-model="groupRoleId" ng-options="i.id as i.name for i in roles | orderBy:['name']"></select>
+                </td>
+                <td><a class="btn btn-primary" ng-disabled="!canAddGroup()" ng-click='addGroup()' style="width: 70px">Add Group</a>
+            </tr>
+            <tr>
+                <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="width:60px">
+                    <span>User:</span>
+                </td>
+                <td>
+                    <input type="text" ng-model="newUserId" typeahead-editable="false"
+                           typeahead="i as i.fullNameAndId for i in users | orderBy:'fullNameAndId' | filter:$viewValue | limitTo:10" >
+                </td>
+                <td style="width:60px;text-align: right">
+                    <span style="margin-right: 5px">Role:</span>
+                </td>
+                <td>
+                    <select ng-model="userRoleId" ng-options="i.id as i.name for i in roles | orderBy:['name']"></select>
+                </td>
+                <td><a class="btn btn-primary" ng-disabled="!canAddUser()" ng-click='addUser()' style="width: 70px">Add User</a>
+            </tr>
+
+        </table>
+
+
+    </div>
+    <table class="table table-bordered table-condensed" style="margin-top:10px;margin-bottom:10px">
+        <thead>
+        <th>Username</th>
+        <th>User's Name</th>
+        <th>Group</th>
+        <th>Role</th>
+        <th style="width: 20px;">&nbsp;</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in accessList">
+            <td>{{p.accessUserId}}</td>
+            <td>{{getFullName(p)}}</td>
+            <td>{{p.groupName}}</td>
+            <td>{{p.roleName}}</td>
+            <td style="cursor: pointer;"><i ng-click='deleteItem(p)' class="fa fa-times"></i></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

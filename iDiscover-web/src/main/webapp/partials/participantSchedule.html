@@ -1,0 +1,36 @@
+<div style="display:-webkit-flex;-webkit-flex-direction:column;">
+    <div style="-webkit-flex:1" class="studyNavigatorHeader">
+        <i class="fa fa-spinner fa-spin pull-left" style="margin: 3px;margin-top: 7px;" ng-if="processing"></i>
+        <div class="pull-right" style="margin-right: 5px;vertical-align: middle" ng-if="syncing">
+            <span style="font-style: italic;font-size: 0.8em"></span>
+            <i class="fa fa-spinner fa-spin" style="margin: 3px;margin-top: 7px;" ></i>
+        </div>
+        <div style="padding: 5px">{{title}}</div>
+    </div>
+    <div style="-webkit-flex:1;overflow: auto">
+        <div ng-repeat="item in items | orderBy:'displaySeq'"  style="clear: both;" class="participantScheduleItem" ng-show="!processing" >
+            <table border="0" style="width: 100%">
+                <tr>
+                    <td style="width: 20px;vertical-align: top">
+                        <div class="pull-left" style="margin-top: 7px;margin-left: 3px; margin-right: 5px; vertical-align: top">
+                            <i ng-class="getVisitIcon()"></i>
+                        </div>
+                    </td>
+                    <td style="vertical-align: bottom;">
+                        <a href="" ng-click="selectForm(item)">{{item.visitName}}</a>
+                    </td>
+                    <td style="min-width: 100px">
+                        <div class="pull-right" style="text-align: right;margin-top: 7px;margin-right: 3px">
+                            <div style="font-size: 0.9em" ng-style="{'color':getTargetDateColor(item)}" ng-class="getTargetDateClass(item)">{{getTargetDateCaption(item)}}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div style="clear:both;font-size: 0.8em;text-align: right; margin-right: 3px;margin-left: 3px;">{{getTimeWindowCaption(item)}}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

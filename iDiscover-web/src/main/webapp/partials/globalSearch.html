@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <ul class="breadcrumb">
+    	<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+    </ul>
+    <div x-loading-control x-not-loading-title="title" x-is-loading="processing"></div>
+    <div class="gridContainer">
+    	<p class="table-header"><strong>Study Enrollments</strong></p>
+        <div x-ng-grid="gridStudyEnrollments" class="gridStyle" style="margin-bottom:5px;height: 30%;"></div>
+        <p class="table-header"><strong>Studies</strong></p>
+        <div x-ng-grid="gridStudyDefinitions" class="gridStyle" style="margin-bottom:5px;height: 30%;"></div>
+        <p class="table-header"><strong>Study Forms</strong></p>
+        <div x-ng-grid="gridStudyForms" class="gridStyle" style="height: 30%;"></div>
+    </div>
+</div>

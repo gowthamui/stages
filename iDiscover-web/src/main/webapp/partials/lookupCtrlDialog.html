@@ -1,0 +1,49 @@
+<div hide-modal should-show="dialogVisible">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="$parent.form" ng-submit="save()">
+            <div class="control-group">
+                <div ng-show="isLoading" style="margin-top: 4px">
+                    <div>
+                        <i class="fa fa-spinner fa-spin pull-left" style="margin: 3px"></i>
+                        <span>Loading...</span>
+                    </div>
+                </div>
+                <div ng-show="!isLoading" style="margin-top: 4px">
+                    <table class="table table-condensed table-bordered">
+
+                        <tr ng-repeat="item in items"  ng-class="isSelected(item)" ng-show="!item.hide" >
+                            <td style="width: 20px">
+                                <input type="checkbox" style="margin: 0px" ng-show="canSelect(item) && multiSelect" ng-click="selectItem(item)" ng-checked="item.selected">
+                                <input type="radio" style="margin: 0px" ng-show="canSelect(item) && !multiSelect" ng-click="selectItem(item)" ng-checked="item.selected">
+                            </td>
+                            <td>
+                                <div ng-style="getIndent(item)" ng-click="toggleFolder(item)">
+                                    <i ng-class="getFolderIcon(item)" ng-style="getFolderStyle(item)" class="pull-left" style="margin-top: 3px;cursor: pointer"></i>
+                                    <div style="margin-left: 5px">
+                                        <div>
+                                            <a class="lookupLink" ng-click="goto(item,$event);" style="cursor: pointer;">{{getCaption(item)}}</a>
+                                            <span ng-show="item.allowsText" >
+                                                <input type="text" ng-model='item.otherValue' style="margin-left: 5px; font-size: 11px;height: 12px">
+                                            </span >
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn pull-left" ng-click="toggleAll($event)" ng-show="multiSelect">
+            <i ng-class="getToggleIcon()"></i>
+            <span>{{getToggleAllText()}}</span>
+        </button>
+        <button class="btn btn-primary" ng-click="close()" ng-disabled="isLoading" >Update</button>
+        <button class="btn" ng-click="cancel()" >Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<div xmlns="http://www.w3.org/1999/html">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-inline" name="$parent.form" ng-submit="search()" >
+            <span style="margin-right: 5px">EMPI: </span>
+            <input type="text" class="input-small" placeholder="EMPI" ng-model="item.idTag">
+            <span style="margin-right: 5px; margin-left:10px;">Last Name: </span>
+            <input type="text" class="input-medium" placeholder="Last Name" ng-model="item.lastName">
+            <span style="margin-right: 5px;margin-left: 10px">First Name: </span>
+            <input type="text" class="input-medium" placeholder="First Name" ng-model="item.firstName">
+            <button ng-click="search()" class="btn btn-small btn-primary" ng-disabled='processing'><i ng-class="searchIcon"/> Search</button>
+            <a ng-click="clear()" class="btn btn-small" ng-disabled='processing'><i ng-class="searchIcon"/> Clear</a>
+
+
+        </form>
+        <div style="height: 450px;font-weight: bold" ng-show="processing">
+            <i class="fa fa-spinner fa-spin" style="margin: 3px;margin-top: 7px;" ></i>
+            <span>Loading...</span>
+        </div>
+        <div style="height: 450px" ng-show="alerts.length>0 && !processing">
+            <alert ng-repeat="alert in alerts" type="alert.type">{{alert.msg}}</alert>
+        </div>
+        <div ng-grid="gridOptions" class="gridStyle" style="height: 450px; width: 870px;" ng-show="alerts.length==0 && !processing"></div>
+
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-primary" ng-disabled="processing" ng-show="canSelect()" ng-click="select()">Select</a>
+        <a class="btn" ng-click="close()" ng-show="!processing">Cancel</a>
+        <a class="btn" ng-disabled="processing" ng-show="processing">Searching...</a>
+    </div>
+</div>

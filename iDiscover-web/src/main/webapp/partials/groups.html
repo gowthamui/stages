@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="pull-right btn-group" style="margin-top: 15px">
+    	<button class="btn" ng-click="openAdd()" ng-disabled="!canAdd()">Add</button>
+        <button class="btn" ng-click="openEdit()" ng-disabled="!canEdit()">Edit</button>
+    </div>
+    <div class="pull-right btn-group" style="margin-top: 15px; margin-right: 5px">
+        <button class="btn" ng-click="toggleClosed()">
+            <i ng-class="getShowIcon()"></i>
+            <span>Show Disabled Groups</span>
+        </button>
+    </div>
+    <ul class="breadcrumb">
+    	<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+    </ul>
+    <div loading-control not-loading-title="title" is-loading="processing"></div>
+    <div class="gridContainer">
+        <div ng-grid="gridOptions" class="gridStyle"></div>
+    </div>
+</div>

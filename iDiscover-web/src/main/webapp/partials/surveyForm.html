@@ -1,0 +1,137 @@
+<div style="margin-left: auto; margin-right:auto;padding: 20px;" class="container">
+    <div ng-show="loading" class="surveyMenuHeader" style="text-align: center;margin-top: 60px; ">
+        <i class="fa fa-spinner fa-spin"></i>
+        <span>{{loadingText}}</span>
+    </div>
+
+    <div ng-show="!loading && invalidState" class="surveyMenuHeader" style="text-align: center;margin-top: 60px; ">
+        <div class="surveyMenuItem" style="text-align: center;padding: 50px">
+            <span> Form Complete</span>
+        </div>
+        <div style="text-align: center; font-size: 50px">
+            Thank You
+        </div>
+    </div>
+
+    <div ng-show="!loading && !invalidState" style="color: white">
+        <div class="surveyPage">
+            <div class="elementHeader">
+
+                <div class="surveyFormHeader">{{data.detail.studyDefSummary.name}}: <small>{{data.detail.formName}}</small>
+	            </div>
+	
+	            <table style="width: 100%" class="table table-condensed table-bordered formTable" >
+	                <tr ng-repeat="el in data.elements" ng-show="!isHidden(el)" ng-class="getRowClass(el,$index)">
+	
+	                    <!--Element-->
+	                    <td style="vertical-align:top; width: 300px" colspan="{{getColumnSpan(el)}}">
+	                        <div style="width: 1px;height: 24px;float: right"></div>
+	                        <div ng-style="getIndent(el)" style="cursor: pointer">
+	                            <div style="float: left" ng-click="toggleRow(el)">
+	                                <i ng-class="getFolderClass(el)"></i>
+	                            </div>
+	                            <div style="margin-left: 20px">
+	                                <span ng-if="el.isListItem">
+	                                    <span ng-show="!el.isRenamingCaption">{{el.caption}}</span>
+	                                    <input
+	                                            ng-model-onblur
+	                                            ui-event="{blur:'renameListCaption(el,false)'}"
+	                                            ng-change="updateListCaption(el)"
+	                                            type="text"
+	                                            ng-if="el.isRenamingCaption"
+	                                            ng-model="el.caption"
+	                                            style="width:150px;height: 15px;">
+	                                    <a ng-show="!el.isRenamingCaption" style="cursor: pointer;" class="formattedValueLink" ng-click="renameListCaption(el,true)">(rename)</a>
+	                                    <i ng-if="el.isLoading && !hasLoadError" class="fa fa-spinner fa-spin" style="margin: 3px"></i>
+	                                </span>
+	
+	                                <span tabindex="{{ canToggle(el)?0:-1}}" ng-if="!el.isListItem">
+	                                    <span class="elementHeader" ng-class="getCaptionClass(el)">{{el.elementSummary.valueDefSummary.name}} &nbsp;</span>
+	                                    <i ng-if="el.isLoading" class="fa fa-spinner fa-spin" style="margin: 3px"></i>
+	                                </span>
+	                            </div>
+	                        </div>
+	                    </td>
+	                    <td ng-if="!isHeader(el)" style="vertical-align: top">
+	                        <div survey-string-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==1 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block"
+	                             value-summary="el.currentValueSummary"
+	                             value-def-summary="el.elementSummary.valueDefSummary"
+	                             item-changed="recordAudit"
+	                             form-element="el"></div>
+	                        <div survey-yes-no-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==2 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block"
+	                             value-def-summary="el.elementSummary.valueDefSummary"
+	                             value-summary="el.currentValueSummary"
+	                             item-changed="recordAudit"
+	                             form-element="el"></div>
+	                        <div survey-checkbox-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==17 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block" value-summary="el.currentValueSummary"  item-changed="recordAudit" form-element="el"></div>
+	                        <div survey-date-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==3 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block" value-summary="el.currentValueSummary"  item-changed="recordAudit" form-element="el"></div>
+	                        <div survey-datetime-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==18 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block" value-summary="el.currentValueSummary"  item-changed="recordAudit" form-element="el"></div>
+	                        <div survey-number-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==4 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block"
+	                             value-summary="el.currentValueSummary"
+	                             value-def-summary="el.elementSummary.valueDefSummary"
+	                             item-changed="recordAudit"
+	                             form-element="el"></div>
+	                        <div survey-signature-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==6 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block" value-summary="el.currentValueSummary" value-def-summary="el.elementSummary.valueDefSummary"  item-changed="recordAudit" form-element="el"></div>
+	                        <div survey-attach-file-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==7 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block" value-summary="el.currentValueSummary" value-def-summary="el.elementSummary.valueDefSummary"  item-changed="recordAudit" form-element="el"></div>
+	                        <div survey-view-file-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==8 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block" value-summary="el.currentValueSummary" value-def-summary="el.elementSummary.valueDefSummary"  item-changed="recordAudit" form-element="el"></div>
+	                        <span survey-lookup-widget
+	                               ng-if="!isCalculatedValue(el) && [10,9].indexOf(el.elementSummary.valueDefSummary.defaultWidgetTypeId)>=0 && el.elementSummary.elementTypeId==2"
+	                               use-default="false"
+	                               caption="valueDefSummary.name"
+	                               default-caption='"Select Value..."'
+	                               value-summary="el.currentValueSummary"
+	                               value-def-summary="el.elementSummary.valueDefSummary"
+	                               multi-select="el.elementSummary.valueDefSummary.defaultWidgetTypeId==10"
+	                               item-changed="recordAudit" form-element="el"></span>
+	
+	                        <div survey-multi-line-string-widgets ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==12 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block"
+	                             value-summary="el.currentValueSummary"
+	                             item-changed="recordAudit"
+	                             value-def-summary="el.elementSummary.valueDefSummary"
+	                             form-element="el"></div>
+	                        <div survey-rating-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==19 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block"
+	                             value-summary="el.currentValueSummary"
+	                             value-def-summary="el.elementSummary.valueDefSummary"
+	                             item-changed="recordAudit"
+	                             form-element="el"></div>
+	                        <div survey-view-agree-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==11 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block" value-summary="el.currentValueSummary" value-def-summary="el.elementSummary.valueDefSummary"  item-changed="recordAudit" form-element="el"></div>
+	                        <div survey-view-sign-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==14 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block"
+	                             value-summary="el.currentValueSummary"
+	                             value-def-summary="el.elementSummary.valueDefSummary"
+	                             item-changed="recordAudit"
+	                             form-element="el"></div>
+							<div survey-slider-widget ng-if="!isCalculatedValue(el) && el.elementSummary.valueDefSummary.defaultWidgetTypeId==20 && el.elementSummary.elementTypeId==2" style="width: 98%; display: block" value-summary="el.currentValueSummary" value-def-summary="el.elementSummary.valueDefSummary" item-changed="recordAudit" form-element="el"></div>
+	                        <div ng-if="isCalculatedValue(el) && el.elementSummary.elementTypeId==2" style="width: 98%; display: block">
+	                            <span class="formattedValueAnswer">{{formattedValue(el)}}</span>
+	                        </div>
+	
+	
+	                        <span ng-if="isList(el) && el.elementSummary.isOpen && el.isLoaded && !el.isLoading">
+	                            <a ng-disabled="processing"
+	                               ng-click="addListItem(el); $event.stopPropagation();"
+	                               style="float: left; margin-bottom: 5px" class="btn btn-primary btn-mini">
+	                                <i class="fa fa-plus-square"></i> Add List Item
+	                            </a>
+	                        </span>
+	
+	                        <div>
+	                            <span ng-if="needsInitials(el.elementSummary.valueDefSummary)" style="margin-top:5px;display: block">
+	                                <span initial-ctrl form-element="el" value-def-summary='el.elementSummary.valueDefSummary' value-summary="el.currentValueSummary" selection-changed="initialsModified" can-edit="true"  item-changed="recordAudit"></span>
+	                            </span>
+	                        </div>
+	
+	                    </td>
+	                    <td ng-if="!isHeader(el)" style="vertical-align: top; width: 25px; text-align: center"><i ng-class="getRequiredIcon()" ng-show="metadataService.isRequired(el.elementSummary.valueDefSummary)"></i></td>
+	                    <!--<td style="width: 1px;height: 42px"></td>-->
+	                </tr>
+	            </table>
+	
+	            <div style="text-align: center">
+	                <button class="btn btn-large btn-primary btn-lg" ng-click="submitForm()">Submit</button>
+	            </div>
+	        </div>
+	
+	
+	    </div>
+	</div>
+</div>

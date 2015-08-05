@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="pull-right" style="margin-top: -5px" x-ng-show="!processing">
+        <div style="clear: both ;float: right;">
+            <ul class="breadcrumb">
+                <li><i x-ng-class="filterIcon"></i> Filter<span class="divider">=</span></li>
+                <li class="dropdown"><a href="" class="dropdown-toggle">{{selectedStudy()}}</a>
+                    <ul class="dropdown-menu" style="right: 0;left: inherit">
+                        <li x-ng-repeat="i in studyDefs | orderBy:'name'">
+                            <a href="" x-ng-click="selectStudy(i)">{{i.name}}</a>
+                        </li>
+                    </ul>
+                    <span class="divider">&gt;</span>
+                </li>
+                <li class="dropdown"><a href="" class="dropdown-toggle">{{selectedState()}}</a>
+                    <ul class="dropdown-menu" style="right: 0;left: inherit">
+                        <li x-ng-repeat="i in objectStates">
+                            <a href="" x-ng-click="selectState(i)">{{i.name}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="btn-group" style="margin-top:3px;clear:both;float:right">
+            <button class="btn" x-ng-click="openEnrollmentProperties()" x-ng-disabled="!canOpenDetails()">Properties</button>
+            <button class="btn" x-ng-click="openDetails()" x-ng-disabled="!canOpenDetails()">View Details</button>
+            <button class="btn" x-ng-click="addParticipant()" x-ng-disabled="!canAddParticipant()">Add Participant to Study</button>
+            <a blob-url data-data="exportData"  class="btn btn-default" download="export.csv">Export</a>
+
+        </div>
+    </div>
+    <ul class="breadcrumb">
+    	<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+    </ul>
+    <div x-loading-control x-not-loading-title="title" x-is-loading="processing"></div>
+    <div class="gridContainer">
+        <div x-ng-grid="gridOptions" class="gridStyle"></div>
+    </div>
+</div>

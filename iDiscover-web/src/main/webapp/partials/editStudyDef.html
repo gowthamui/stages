@@ -1,0 +1,221 @@
+<div ng-show="!hideDialog">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body" style="overflow-y: auto">
+        <form class="form-horizontal" name="$parent.form" >
+            <tabset>
+                <tab heading="Study Info">
+                    <div style="overflow-y: auto; height: 400px">
+                        <div class="control-group">
+                            <label class="control-label">Name</label>
+
+                            <div class="controls">
+                                <input type="text" required placeholder="Name" ng-model="item.name" autofocus>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Principal Investigator</label>
+
+                            <div class="controls">
+
+                                <input type="text" ng-model="item.principalInvestigatorId" typeahead-editable="false" typeahead-input-formatter="formatUser($model)"
+                                       typeahead="i.id as i.lastName+', '+i.firstName+'' for i in users | orderBy:'fullNameAndId' | filter:$viewValue | limitTo:10" >
+
+                                <!--<select required ng-model="item.principalInvestigatorId"-->
+                                        <!--ng-options="i.id as i.lastName+', '+i.firstName+'' for i in users | orderBy:['lastName','firstName']">-->
+                                <!--</select>-->
+
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Study Status</label>
+
+                            <div class="controls">
+                                <select required ng-model="item.objectStateSummary.objectStateTypeSummary.id"
+                                        ng-options="i.id as i.name for i in studyStatuses">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Organization</label>
+
+                            <div class="controls">
+                                <select required ng-model="item.organizationSummary.id"
+                                        ng-options="i.id as i.name for i in organizations">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Participant Identification</label>
+
+                            <div class="controls">
+                                <select required ng-model="item.participantSourceId" class="input-xlarge"
+                                        ng-options="i.id as i.name for i in participantSources">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">End Date</label>
+
+                            <div class="controls">
+                                <input date-fix type="date" required placeholder="End Date" date="item.endDate">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">IRB Approved Date</label>
+
+                            <div class="controls">
+                                <input date-fix type="date" placeholder="IRB Approved Date" date="item.irbApprovedDate">
+                            </div>
+                        </div>
+
+
+                        <div class="control-group" ng-if="item.id>0">
+                            <label class="control-label">Access</label>
+
+                            <div class="controls">
+                                <div class="btn-group">
+                                    <a class="btn btn-primary btn-small" ng-click="openConfigureAccess()"><i
+                                            ng-class="accessIcon"/> Configure Access</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Enrollment Projections">
+                    <div style="overflow-y: auto; height: 400px">
+                        <alert type="info" style="float: right;max-width: 350px">
+                            Projected Amount represents the cumulative number of enrollments expected for the Projection Date
+                        </alert>
+
+
+                        <div class="control-group" style="overflow-y: auto; max-height: 350px" scroll-bottom item-to-watch="selectedProjection">
+                            <table class="table table-bordered table-condensed;" style="width:300px">
+                                <thead>
+                                <tr>
+                                    <th style="white-space: nowrap">Projection Date</th>
+                                    <th style="white-space: nowrap">Projected Amount</th>
+                                    <th style="width: 50px;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="projection in item.enrollmentProjections | orderBy:'projectionDate'" >
+                                    <td>
+                                        <input date-fix type="date" date="projection.projectionDate" class="formattedValueInput">
+                                    </td>
+                                    <td>
+                                        <input style="width:100px;" ng-model="projection.projectedAmount" min="0" type="number" class="formattedValueInput" ng-blur="validateAmount(projection,$event)">
+                                    </td>
+                                    <td style="text-align: center;"><i class="fa fa-times-circle" style="cursor: pointer;" ng-click="removeProjection(projection)"></i></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="control-group"  style="margin-top: 10px">
+                            <button class="btn btn-info btn-mini" ng-click="addProjection()">Add Row</button>
+                        </div>
+
+                    </div>
+                </tab>
+                <tab heading="Pre-Screening Query">
+                    <div class="control-group">
+                        <label class="control-label">Pre-Screening Is Active?</label>
+
+                        <div class="controls">
+                            <input type="checkbox" ng-model="item.screeningQueryActive">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Pre-Screening Query</label>
+                        <div class="controls">
+                            <div query-lookup query-id="item.queryId" selected-item="item.query" dialog-changed="dialogChanged" selectable-types="[1]"></div>
+                        </div>
+                    </div>
+                    <div class="control-group" ng-show="item.queryId>0">
+                        <label class="control-label">Execute Query</label>
+
+                        <div class="controls">
+                            <button ng-disabled="executingQuery" name="executeQueryButton" ng-click="executeQuery()" class="btn-small btn btn-primary" >{{ executingQuery?'Executing...':'Execute Query' }}</button>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Participant Identification">
+                	<div class="control-group">
+                        <label class="control-label">Select Optional Fields</label>
+                        <div class="controls">
+                            <label class="checkbox">
+                            	<input type="checkbox" checklist-model="item.optionalFields" checklist-value="'email'"> Email
+							</label>
+                            <label class="checkbox">
+                            	<input type="checkbox" checklist-model="item.optionalFields" checklist-value="'encounterNumber'"> Encounter Number
+							</label>
+							<label class="checkbox">
+                            	<input type="checkbox" checklist-model="item.optionalFields" checklist-value="'facilityId'"> Facility ID
+							</label>
+							<label class="checkbox">
+                            	<input type="checkbox" checklist-model="item.optionalFields" checklist-value="'screeningId'"> Screening ID
+							</label>
+
+							<label class="checkbox">
+                            	<input type="checkbox" checklist-model="item.optionalFields" checklist-value="'ldapId'"> User ID (ldap)
+                            </label>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Chart Review">
+                    <div class="control-group">
+                        <label class="control-label">Select Documents To Review</label>
+                        <div class="controls">
+                            <label class="checkbox" data-ng-repeat="doc in chartReviewDocuments | orderBy:'caption'">
+                                <input type="checkbox" checklist-model="item.chartReviewSettings.documents" checklist-value="doc.id"> {{doc.caption}}
+                            </label>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Finanacials">
+					<div style="overflow-y: auto; height: 400px">
+						<div class="control-group">
+							<label class="control-label">GL Business Unit</label>
+							<div class="controls">
+							 	
+                                 <select required ng-model="x"></select>
+                             </div>
+                         </div>
+                         <div class="control-group">	
+							<label class="control-label">GL Department ID</label>
+							<div class="controls">
+                                <select required ng-model="y"></select> 
+                            </div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Project ID</label>
+                            <div class="controls">
+                                <input type="text" required placeholder="" ng-model="y" autofocus>
+                            </div>	
+                         </div>
+							<div class="control-group">
+								<label class="control-label">Fund Code</label>
+                            	<div class="controls">
+                                	<select required ng-model="z"></select>	
+                            	</div>	
+                            </div>
+							
+						</div>
+					</tab>
+            </tabset>
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" disabled="true" ng-show="processing">Saving...</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()" ng-hide="processing">Save</button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

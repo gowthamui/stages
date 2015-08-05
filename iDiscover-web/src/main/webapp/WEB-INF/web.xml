@@ -1,0 +1,136 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+    <display-name>iDiscover</display-name>
+
+    <filter>
+        <filter-name>junctionsimulator</filter-name>
+        <filter-class>
+            org.ihc.security.tam.mock.web.filter.TamJunctionSimulationFilter
+        </filter-class>
+        <init-param>
+            <param-name>userDataLocation</param-name>
+            <param-value>tam-users.xml</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>junctionsimulator</filter-name>
+        <url-pattern>/auth/*</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>tamUserSessionSyncronizationFilter</filter-name>
+        <filter-class>org.ihc.security.tam.web.filter.TamUserSessionSyncronizationFilter
+        </filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>tamUserSessionSyncronizationFilter</filter-name>
+        <url-pattern>/auth/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>org.ihc.security.tam.web.filter.TamAuthenticationFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/auth/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>samlTokenFilter</filter-name>
+        <filter-class>org.ihc.hwcir.iDiscover.SamlTokenRequestFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>samlTokenFilter</filter-name>
+        <url-pattern>/auth/saml/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>LogoutFilter</filter-name>
+        <filter-class>org.ihc.security.tam.web.filter.TamLogoutFilter</filter-class>
+        <init-param>
+            <param-name>invalidateTamSession</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>logoutSuccessUrl</param-name>
+            <param-value>/iDiscover-web/index.jsp</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>LogoutFilter</filter-name>
+        <url-pattern>/auth/logout</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>AppFileServlet</servlet-name>
+        <servlet-class>org.ihc.hwcir.iDiscover.servlets.AppFileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AppFileServlet</servlet-name>
+        <url-pattern>/unauth/releases/appFile/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>InitiateServlet</servlet-name>
+        <servlet-class>org.ihc.hwcir.iDiscover.servlets.InitiateServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InitiateServlet</servlet-name>
+        <url-pattern>/auth/saml/initiate</url-pattern>
+    </servlet-mapping>
+
+    <!--Take out for now - using initiate-->
+    <!--<servlet>-->
+        <!--<servlet-name>MMISearchServlet</servlet-name>-->
+        <!--<servlet-class>org.ihc.hwcir.iDiscover.servlets.MMISearchServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>MMISearchServlet</servlet-name>-->
+        <!--<url-pattern>/auth/saml/mmiSearch</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+
+    <servlet>
+        <servlet-name>SurveyRedirectServlet</servlet-name>
+        <servlet-class>org.ihc.hwcir.iDiscover.servlets.SurveyRedirectServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SurveyRedirectServlet</servlet-name>
+        <url-pattern>/auth/surveyLink/*</url-pattern>
+    </servlet-mapping>
+
+    <ejb-local-ref>
+        <ejb-ref-name>ejb/ClientDataAccess</ejb-ref-name>
+        <local>org.ihc.hwcir.iDiscover.ClientDataAccess</local>
+    </ejb-local-ref>
+
+    <ejb-local-ref>
+        <ejb-ref-name>ejb/CDRBean</ejb-ref-name>
+        <local>org.ihc.hwcir.iDiscover.cdr.CDRBean</local>
+    </ejb-local-ref>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <mime-mapping>
+        <extension>ipa</extension>
+        <mime-type>application/octet-stream</mime-type>
+    </mime-mapping>
+
+    <mime-mapping>
+        <extension>plist</extension>
+        <mime-type>text/xml</mime-type>
+    </mime-mapping>
+
+</web-app>

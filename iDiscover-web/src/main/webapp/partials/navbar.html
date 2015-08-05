@@ -1,0 +1,60 @@
+<div class="navbar navbar-inverse navbar-fixed-top" ng-controller='LoginCtrl'>
+    <div class="navbar-inner" style="min-width: 850px">
+        <div class="container-fluid">
+        	<a href="#" class="brand"><img src="../images/ResearchDocAllWhite.png" style="height: 28px; margin: -15px 0 -11px;"></a>
+        	<ul class="nav">
+        		<!--Pending-->
+                <li class="dropdown">
+                	<a ng-click="gotoState('pending')"><i class="icon-white" ng-class="pendingMenuIcon"></i> Pending Items</a>
+                </li>
+				<!--Enrollment-->
+                <li class="dropdown" ng-show="enrollmentMenu.length > 0">
+                	<a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-white" ng-class="enrollmentMenuIcon"></i> Work on Studies<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+                      <li ng-repeat="link in enrollmentMenu | orderBy:'name'"><a href ng-click="gotoState(link.path)">{{link.name}}</a></li>
+                  	</ul>
+	            </li>
+	            <!--Authoring-->
+	            <li class="dropdown" ng-show="authorMenu.length>0">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-white" ng-class="authorMenuIcon"></i> Author Studies<b class="caret"></b></a>
+	                <ul class="dropdown-menu">
+	                    <li ng-repeat="link in authorMenu | orderBy:'name'"><a href ng-click="gotoState(link.path)">{{link.name}}</a></li>
+	                </ul>
+	            </li>
+	        </ul>
+                <div class="nav pull-right">
+                	<input type="search" class="search-query" placeholder="Search" x-ng-model="$parent.$parent.globalSearch" style="margin-top: 5px;max-width: 170px" ui-keypress="{13:'keyPressGlobalSearch()'}">
+                    <a class="btn btn-inverse dropdown-toggle" style="background: transparent" data-toggle="dropdown" >
+                        <i class="icon-white" style="font-size: 18px" ng-class="profileIcon"></i><span style="border-top-color: #ffffff;margin-left: 3px" class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a ng-click="openSettings()">User Settings</a>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="-1" href="#">Admin</a>
+                            <ul class="dropdown-menu" style="right: 100%;left: inherit">
+                                <li ng-repeat="link in adminMenu | orderBy:'name'"><a href ng-click="gotoState(link.path)">{{link.name}}</a></li>
+                                <li>
+                                    <a href="../unauth/releases/Deploy.jsp" target="_blank">
+                                        <i class="icon-white" ng-class="iPadMenuIcon"></i>
+                                        iPad
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a ng-click="logout()">Logout</a>
+                        </li>
+                    </ul>
+
+                    <a class="btn btn-inverse" style="background: transparent" name="manual" target="_blank" href="../manual/_book">
+                        <i class="icon-white" style="font-size: 18px" ng-class="helpIcon"></i></span>
+                    </a>
+
+                </div>
+        </div>
+    </div>
+    <div class="loadingBar" ng-class="{open:isNavigating,closed:!isNavigating}">
+        <span>{{ loadingText() }}</span>
+    </div>
+</div>

@@ -1,0 +1,220 @@
+<span xmlns="http://www.w3.org/1999/html">
+    <span ng-if="templateType=='string'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <span ng-if='!isReadOnly()'>
+                <input type="text" class="formattedValueInput" ng-model-onblur ng-model='valueSummary.stringValue' ng-change="stringValueChanged(this)">
+            </span>
+
+        </span>
+    </span>
+    <span ng-if="templateType=='multiLineString'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <span ng-if='!isReadOnly()'>
+                <span ng-if="formattedValue.length>0" ng-click="editMultiLineString($event)" class="formattedValueAnswer">{{ formattedValue }}</span>
+                <a href="" ng-if="formattedValue.length<=0 || !formattedValue" ng-click="editMultiLineString($event)" class="formattedValueLink">Enter Text...</a>
+            </span>
+        </span>
+    </span>
+    <span ng-if="templateType=='bool'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <span ng-if='!isReadOnly()'>
+                <input type="checkbox" class="formattedValueInput" ng-model='valueSummary.boolValue' ng-change="boolValueChanged(this)">
+            </span>
+        </span>
+    </span>
+	<span ng-if="templateType=='yesOrNo'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <span ng-if='!isReadOnly()'>
+                <div class="btn-group">
+                    <button class="btn btn-small" ng-model="valueSummary.boolValue" btn-radio="true" ng-click="yesNoValueChanged(true)">Yes</button>
+                    <button class="btn btn-small" ng-model="valueSummary.boolValue" btn-radio="false" ng-click="yesNoValueChanged(false)" style="width: 45px;">No</button>
+                </div>
+            </span>
+        </span>
+    </span>
+    <span ng-if="templateType=='date'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <span ng-if='!isReadOnly()'>
+                <input date-fix type="date" date="valueSummary.dateValue" class="formattedValueInput">
+            </span>
+        </span>
+    </span>
+
+    <span ng-if="templateType=='dateTime'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <span ng-if='!isReadOnly()'>
+                <input date-time-fix class="input-xlarge formattedValueInput" type="datetime-local" date="valueSummary.dateValue">
+                <!--<datetimepicker show-weeks="false" ng-model="valueSummary.dateValue" show-meridian="true" date-format="MM/dd/yyyy"></datetimepicker>-->
+            </span>
+        </span>
+    </span>
+    <span ng-if="templateType=='rating'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <div rating-widget max-value="ratingMax()" selection-changed="ratingChanged" value-summary="valueSummary" is-read-only="isReadOnly()"></div>
+        </span>
+    </span>
+     <span ng-if="templateType=='slider'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <input type="range"  min="{{sliderMin()}}" max="{{sliderMax()}}" ng-readonly="isReadOnly()" class="formattedValueInput" ng-model='valueSummary.numberValue' ng-change="sliderValueChanged(this)">
+            <span style="font-weight: bold" ng-show="valueSummary.numberValue">{{ valueSummary.numberValue }}</span>
+        </span>
+    </span>
+
+    <span ng-if="templateType=='number'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <span ng-if='!isReadOnly()'>
+                <input type="number"
+                       style="width: 120px;"
+                       ng-model-onblur ng-model='valueSummary.numberValue'
+                       ng-focus="numberEntered(this)"
+                       class="formattedValueInput"
+                       ng-change="numberValueChanged(this)">
+
+                <span ng-show="valueDefSummary.lookupGroupSummary!=null">
+                    <span lookup-ctrl
+                          caption="valueDefSummary.name"
+                          default-caption='"(Enter Units)"'
+                          use-default="true"
+                          selected-items="selectedLookupItems"
+                          selection-changed="unitsSelected"
+                          lookup-group-loaded="unitsLoaded"
+                          lookup-group-summary="valueDefSummary.lookupGroupSummary"
+                          multi-select="false"></span>
+                </span>
+            </span>
+        </span>
+    </span>
+    <span ng-if="templateType=='list'">
+
+    </span>
+    <span ng-if="templateType=='sig'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if="hasValue">
+                <div class="signatureBackground" style="min-width: 250px">
+                    <img ng-src="{{getSignaturePath()}}" ng-click="editSignature($event)" style="height:100px;">
+                </div> <a href="" class="formattedValueLink" ng-if="!isReadOnly()" ng-click="editSignature($event)">Re-sign...</a>
+                <br>
+                <span class="formattedValueAnswer">{{ formattedValue }}</span>
+            </span>
+            <a href="" ng-if="canEdit && !hasValue && !isComplete()" ng-click="editSignature($event)" class="formattedValueLink">Sign...</a>
+        </span>
+    </span>
+    <span ng-if="templateType=='viewFile'">
+        <span ng-if="valueSummary.valueNoteId==1" class="formattedValueNotAvailable">Not Available</span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-show="hasValue" class="formattedValueAnswer" style="margin-right: 10px">{{formattedValue }}</span>
+            <span>
+                <a ng-click="fileViewed($event);" class="formattedValueLink">View File...</a>
+            </span>
+        </span>
+    </span>
+    <span ng-if="templateType=='file'">
+        <span ng-if="valueSummary.valueNoteId==1" >
+            <span class="formattedValueNotAvailable">Not Available</span>
+            <span original-value-id='valueSummary.id' audit-text has-value='hasValue' current-value-summary='valueSummary' value-summary='previousValueSummary'
+                  value-def-summary='valueDefSummary'></span>
+        </span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()'>
+                <a href="#" ng-click="showViewFile($event)" class="formattedValueAnswer">{{formattedValue }}</a>
+                <span original-value-id='valueSummary.id' audit-text has-value='hasValue' current-value-summary='valueSummary' value-summary='previousValueSummary'
+                      value-def-summary='valueDefSummary'></span>
+            </span>
+            <span ng-if='!isReadOnly()'>
+                <a href="#" ng-click="showViewFile($event);" class="formattedValueAnswer">{{formattedValue }}</a>
+                <a href="#" ng-click="editFile($event);" class="formattedValueLink">Attach File...</a>
+            </span>
+        </span>
+    </span>
+    <span ng-if="templateType=='lookup'">
+        <span ng-if="valueSummary.valueNoteId==1">
+            <span class="formattedValueNotAvailable">Not Available</span>
+        </span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='isReadOnly()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <span original-value-id='valueSummary.id' audit-text value-summary='previousValueSummary' value-def-summary='valueDefSummary'></span>
+            <div ng-if='!isReadOnly()'>
+                <span lookup-ctrl
+                      use-default="false"
+                      caption="valueDefSummary.name"
+                      default-caption='"Select Value..."'
+                      selected-items="selectedLookupItems"
+                      selection-changed="lookupSelectionChanged"
+                      lookup-group-summary="valueDefSummary.lookupGroupSummary"
+                      multi-select="valueDefSummary.defaultWidgetTypeId==10"></span>
+            </div>
+        </span>
+    </span>
+    <span ng-if="templateType=='viewAndAgree'">
+        <span ng-if="valueSummary.valueNoteId==1">
+            <span class="formattedValueNotAvailable">Not Available</span>
+            ValueNote=1
+        </span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='formattedValue'>
+                <a href="#" ng-click="showViewAndAgree($event)" class="formattedValueAnswer">{{formattedValue }}</a>
+            </span>
+            <span ng-if='!formattedValue'>
+                <a href="#" ng-click="showViewAndAgree($event)" class="formattedValueLink">View...</a>
+            </span>
+        </span>
+    </span>
+    <span ng-if="templateType=='viewAndSign'">
+        <span ng-if="valueSummary.valueNoteId==1">
+            <span class="formattedValueNotAvailable">Not Available</span>
+        </span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-if='(isReadOnly()) && hasValue '>
+                <a href="#" ng-click="showViewAndSign($event)" class="formattedValueAnswer">{{formattedValue}}</a>
+            </span>
+            <span ng-if='!isReadOnly()'>
+                <span ng-if="hasValue">
+                    <a href="#" ng-click="showViewAndSign($event)" class="formattedValueAnswer">{{formattedValue}}</a>
+                </span>
+                <a href="" ng-if="!hasValue" class="formattedValueLink" ng-click="showViewAndSign($event)">View and Sign...</a>
+            </span>
+        </span>
+    </span>
+    <span ng-if="templateType=='other'" class="formattedValueAnswer">{{ formattedValue }}</span>
+    <span ng-if="templateType=='form'">
+        <span ng-if="valueSummary.valueNoteId==1">
+            <span class="formattedValueNotAvailable">Not Available</span>
+        </span>
+        <span ng-if="valueSummary.valueNoteId!=1">
+            <span ng-click='showFormApprovalComments()' class="formattedValueAnswer">{{ formattedValue }}</span>
+            <i ng-if="hasFormApprovalComments()" ng-click='showFormApprovalComments()' ng-class="commentIcon"
+               style="cursor: pointer"></i>
+            <div ng-if='canEdit && isOpen()'>
+                <a class="btn btn-primary btn-mini" ng-if="canMarkFormComplete()" ng-click="updateFormStatus(4); ">Mark Complete</a>
+                <a class="btn btn-warning btn-mini" ng-if="canMarkFormIncomplete()" ng-click="updateFormStatus(5);">Reopen and Modify</a>
+            </div>
+        </span>
+    </span>
+
+    <span ng-if="needsInitials()" style="margin-top:5px;display: block">
+        <span initial-ctrl value-def-summary='valueDefSummary' value-summary="valueSummary" can-edit="!isReadOnly()" selection-changed="initialsModified"></span>
+    </span>
+    <span ng-show="showAudit()"
+          original-value-id='valueSummary.id'
+          audit-text has-value='hasValue'
+          current-value-summary='valueSummary'
+          value-summary='previousValueSummary'
+          value-def-summary='valueDefSummary'></span>
+</span>

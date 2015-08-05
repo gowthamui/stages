@@ -1,0 +1,556 @@
+		<div ng-show="!hideDialog">
+		<div class="modal-header">
+		    <h4 ng-bind='title'></h4>
+		</div>
+		<div class="modal-body" style="overflow-y: visible">
+		<form class="form-horizontal" name="$parent.form" ng-submit="save()">
+		<tabset>
+		
+		<tab heading="Question Info">
+		    <div style="overflow-y: auto;height: 400px">
+		        <div class="control-group">
+		            <label class="control-label">Caption</label>
+		
+		            <div class="controls">
+		                <textarea style="resize: vertical" ng-model="element.elementSummary.valueDefSummary.name"
+		                          placeholder="Caption"
+		                          class="input-xxlarge" rows="4" maxlength="1499" ng-required="true" autofocus></textarea>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if='widgetTypeVisible()'>
+		            <label class="control-label">Answer Type</label>
+		
+		            <div class="controls">
+		                <select ng-required="widgetTypeVisible()"
+		                        ng-model="element.elementSummary.valueDefSummary.defaultWidgetTypeId"
+		                        ng-options="i.id as i.name for i in widgetTypes | orderBy:'name'">
+		                </select>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="ratingVisible()">
+		            <label class="control-label">Max Number of Stars?</label>
+		
+		            <div class="controls">
+		                <input type="number" class="input-small" placeholder="Max Stars" ng-model="metadata.max" min="1"
+		                       max="10">
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="sliderVisible()">
+		            <label class="control-label">Min?</label>
+		
+		            <div class="controls">
+		                <input type="number" class="input-small" placeholder="Max" ng-model="metadata.min">
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="sliderVisible()">
+		            <label class="control-label">Max?</label>
+		
+		            <div class="controls">
+		                <input type="number" class="input-small" placeholder="Max" ng-model="metadata.max">
+		            </div>
+		        </div>
+		
+		
+		
+		        <div class="control-group" ng-if='listWidgetTypeVisible()'>
+		            <label class="control-label">List Caption</label>
+		
+		            <div class="controls">
+		                <input type="text" placeholder="List caption"
+		                       ng-model="element.elementSummary.valueDefSummary.listCaption">
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if='listWidgetTypeVisible()'>
+		            <label class="control-label">List Answer Type</label>
+		
+		            <div class="controls">
+		                <select ng-disabled="isExistingItem" ng-required="listWidgetTypeVisible()"
+		                        ng-model="element.elementSummary.valueDefSummary.defaultListWidgetTypeId"
+		                        ng-options="i.id as i.name for i in widgetTypes | orderBy:'name'">
+		                </select>
+		
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if='lookupGroupsVisible()'>
+		            <label class="control-label">Lookup Items</label>
+		
+		            <div class="controls">
+		                <div lookup-editor
+		                     show-defaults="element.elementSummary.valueDefSummary.defaultWidgetTypeId==4"
+		                     lookup-group-id="element.elementSummary.valueDefSummary.lookupGroupId"
+		                     dialog-changed='dialogChanged'
+		                     lookup-group="element.elementSummary.valueDefSummary.lookupGroupSummary"></div>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if='formDefsVisible()'>
+		            <label class="control-label">Sub Form Template</label>
+		
+		            <div class="controls">
+		                <div style="margin-top: 4px">
+		                    <strong>{{element.elementSummary.valueDefSummary.formDefName}}</strong>
+		
+		                    <div class="btn-group" style="margin-left: 5px">
+		                        <a class="btn btn-primary btn-small" ng-click="openFormTemplateLookup()"><i
+		                                ng-class="searchIcon"/>
+		                            Choose Template</a>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div ng-show='fileReferenceMetadataVisible()'>
+		            <div class="control-group">
+		                <label class="control-label">File Name</label>
+		
+		                <div class="controls">
+		                    <input type="text" ng-model="element.elementSummary.valueDefSummary.fileValue.fileValue.name"
+		                           class="input-xlarge"
+		                           ng-required="fileReferenceMetadataVisible()" placeholder="File Name">
+		                </div>
+		            </div>
+		            <div class="control-group">
+		                <label class="control-label">Mime Type</label>
+		
+		                <div class="controls">
+		                    <input type="text" ng-model="element.elementSummary.valueDefSummary.fileValue.fileValue.mimeType"
+		                           ng-required="fileReferenceMetadataVisible()"
+		                           placeholder="Mime Type" ng-readonly="fileType=='upload'">
+		                </div>
+		            </div>
+		            <div>
+		                <label class="control-label">File Type</label>
+		
+		                <div class="controls">
+		                    <label class="radio" ng-show="hasExistingFile" style="padding-bottom: 10px">
+		                        <input type="radio" ng-model="fileType" value="existing">Use Existing <a
+		                            ng-click="showFileReferenceFile()">(View Existing)</a><br>
+		                    </label>
+		                    <label class="radio" style="padding-bottom: 10px">
+		                        <input type="radio" ng-model="fileType" value="reference">Reference URL<br>
+		                    </label>
+		                    <label class="radio" style="padding-bottom: 10px">
+		                        <input type="radio" ng-model="fileType" value="upload">Upload File
+		                    </label>
+		
+		                    <div style="margin-top: 20px; margin-bottom: 20px">
+		                        <span class="alert alert-info">{{acceptedMimeTypeText}}</span>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="control-group" ng-show="fileType=='reference'">
+		                <label class="control-label">File Path</label>
+		
+		                <div class="controls">
+		                    <input type="text" ng-model="fileRef.filePath"
+		                           ng-required="fileReferenceMetadataVisible() && fileType=='reference'"
+		                           placeholder="File Path">
+		                </div>
+		            </div>
+		            <div class="control-group" ng-show="fileType=='upload'">
+		                <label class="control-label">Upload File</label>
+		
+		                <div class="controls">
+		                    <input type="file" file-changed="selectedFileChangedDelegate" file="selectedFile"
+		                           placeholder="Upload File"
+		                           accept="{{acceptedMimeTypes()}}">
+		                </div>
+		            </div>
+		        </div>
+		        <div ng-show='consentMetadataVisible()'>
+		            <div class="control-group">
+		                <label class="control-label">PDF Field Mappings</label>
+		
+		                <div class="controls">
+		                    <table class="table table-bordered table-condensed">
+		                        <thead>
+		                        <tr>
+		                            <th>PDF Field</th>
+		                            <th>Field Type</th>
+		                            <th style="min-width: 150px">Map To Element?</th>
+		                            <th>Value</th>
+		                        </tr>
+		                        </thead>
+		                        <tbody>
+		                        <tr ng-repeat="item in element.elementSummary.valueDefSummary.valueDefPDFFields">
+		                            <td>{{item.fieldName}}</td>
+		                            <td>{{item.fieldTypeSummary.name}}</td>
+		                            <td>
+		                                <div outline-item-lookup
+		                                     ng-show="item.fieldType == 1"
+		                                     selectable-data-types="buttonDataTypes"
+		                                     dialog-changed="dialogChanged"
+		                                     form-def-id="formDefDetailSummary.id"
+		                                     selected-item="item.selectedItem"></div>
+		                                <div outline-item-lookup
+		                                     ng-show="item.fieldType != 1 && item.fieldType != 7"
+		                                     selectable-data-types="fieldDataTypes"
+		                                     dialog-changed="dialogChanged"
+		                                     form-def-id="formDefDetailSummary.id"
+		                                     selected-item="item.selectedItem"></div>
+		                            </td>
+		
+		                            <td>
+		                                <select ng-model="item.fieldValueType" ng-show="item.fieldType==1"
+		                                        ng-options="i.id as i.name for i in pushbuttonValueTypes">
+		                                </select>
+		                                <select ng-model="item.fieldValueType" ng-show="item.fieldType==2 || item.fieldType==3"
+		                                        ng-options="i.id as i.name for i in checkboxValueTypes">
+		                                </select>
+		
+		                                <select ng-model="item.fieldValueType" ng-show="item.fieldType==4"
+		                                        ng-options="i.id as i.name for i in textboxValueTypes">
+		                                </select>
+		                            </td>
+		
+		                        </tr>
+		                        </tbody>
+		                    </table>
+		                </div>
+		            </div>
+		        </div>
+		
+		    </div>
+		</tab>
+		
+		<tab ng-show="widgetTypeVisible()" heading="Validation">
+		    <div style="overflow-y: auto;height: 400px">
+		        <div class="control-group">
+		            <label class="control-label">Requires Participant Initials</label>
+		
+		            <div class="controls">
+		                <input type="checkbox" ng-checked="metadata.requiresUserInitials"
+		                       ng-click="toggleValue(metadata,'requiresUserInitials')">
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="requiredVisible()">
+		            <label class="control-label">Is Required?</label>
+		
+		            <div class="controls">
+		                <input type="checkbox" ng-checked="metadata.isRequired" ng-click="toggleValue(metadata,'isRequired')">
+		            </div>
+		        </div>
+		
+		
+		        <div class="control-group" ng-if="numberRangeVisible()">
+		            <label class="control-label">Number Format?</label>
+		
+		            <div class="controls">
+		                <div>
+		                    <span ng-show="loadingNumberFormats">Loading...</span>
+		                    <select ng-show="!loadingNumberFormats"
+		                            ng-model="metadata.numberFormatId"
+		                            ng-options="i.id as i.name for i in numberFormats | orderBy:'name'">
+		                        <option value="">-- No Number Format --</option>
+		                    </select>
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="numberRangeVisible()">
+		            <label class="control-label">Number Range?</label>
+		
+		            <div class="controls">
+		                <div>
+		                    <input type="number" name="min" placeholder="Min" ng-disabled="!metadata.hasMin"
+		                           ng-model="metadata.min"
+		                           ui-validate="'validateMin($value)'" ui-validate-watch="'max'">
+		                    <label class="checkbox" style="vertical-align: middle;display: inline-block">
+		                        <input type="checkbox" ng-checked="metadata.hasMin" ng-click="toggleValue(metadata,'hasMin')">
+		                        Has
+		                        Minimum Value
+		                    </label>
+		                </div>
+		                <div style="margin-top: 5px">
+		                    <input type="number" name="max" placeholder="Max" ng-disabled="!metadata.hasMax"
+		                           ng-model="metadata.max"
+		                           ui-validate="'validateMax($value)'" ui-validate-watch="'min'">
+		                    <label class="checkbox" style="vertical-align: middle;display: inline-block">
+		                        <input type="checkbox" ng-checked="metadata.hasMax" ng-click="toggleValue(metadata,'hasMax')">
+		                        Has
+		                        Maximum Value
+		                    </label>
+		                </div>
+		                <div style="display: inline-block;margin-top: 10px">
+		                    <span class="alert alert-danger" ng-show="form.max.$error.validator || form.min.$error.validator"
+		                          style="display: inline-block;">Max must be greater than min.</span>
+		
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="dateRangeVisible()">
+		            <label class="control-label">Date Range?</label>
+		
+		            <div class="controls">
+		                <div>
+		                    <input type="date" date-fix name="minDate" placeholder="Min Date" ng-disabled="!metadata.hasMinDate"
+		                           date="metadata.minDate">
+		                    <label class="checkbox" style="vertical-align: middle;display: inline-block">
+		                        <input type="checkbox" ng-checked="metadata.hasMinDate"
+		                               ng-click="toggleValue(metadata,'hasMinDate')">
+		                        Has Minimum Date
+		                    </label>
+		                </div>
+		                <div style="margin-top: 5px">
+		                    <input type="date" date-fix name="maxDate" placeholder="MaxDate" ng-disabled="!metadata.hasMaxDate"
+		                           date="metadata.maxDate">
+		                    <label class="checkbox" style="vertical-align: middle;display: inline-block">
+		                        <input type="checkbox" ng-checked="metadata.hasMaxDate"
+		                               ng-click="toggleValue(metadata,'hasMaxDate')">
+		                        Has Maximum Date
+		                    </label>
+		                </div>
+		                <div style="display: inline-block;margin-top: 10px">
+		                    <span class="alert alert-danger" ng-show="invalidDateRange()" style="display: inline-block;">Max Date must be greater than Min Date.</span>
+		
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="dateTimeRangeVisible()">
+		            <label class="control-label">Date Time Range?</label>
+		
+		            <div class="controls">
+		                <div>
+		                    <input type="datetime-local" date-time-fix name="minDate" placeholder="Min Date"
+		                           ng-disabled="!metadata.hasMinDate" date="metadata.minDate">
+		                    <label class="checkbox" style="vertical-align: middle;display: inline-block">
+		                        <input type="checkbox" ng-checked="metadata.hasMinDate"
+		                               ng-click="toggleValue(metadata,'hasMinDate')">
+		                        Has Minimum Date
+		                    </label>
+		                </div>
+		                <div style="margin-top: 5px">
+		                    <input type="datetime-local" date-time-fix name="maxDate" placeholder="MaxDate"
+		                           ng-disabled="!metadata.hasMaxDate" date="metadata.maxDate">
+		                    <label class="checkbox" style="vertical-align: middle;display: inline-block">
+		                        <input type="checkbox" ng-checked="metadata.hasMaxDate"
+		                               ng-click="toggleValue(metadata,'hasMaxDate')">
+		                        Has Maximum Date
+		                    </label>
+		                </div>
+		                <div style="display: inline-block;margin-top: 10px">
+		                    <span class="alert alert-danger" ng-show="invalidDateRange()" style="display: inline-block;">Max Date must be greater than Min Date.</span>
+		
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="stringValidationVisible()">
+		            <label class="control-label">Text Format?</label>
+		
+		            <div class="controls">
+		                <div>
+		                    <span ng-show="loadingStringFormats">Loading...</span>
+		                    <select ng-show="!loadingStringFormats"
+		                            ng-model="metadata.stringFormatId"
+		                            ng-options="i.id as i.name for i in stringFormats | orderBy:'name'">
+		                        <option value="">-- No Text Format --</option>
+		                    </select>
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="stringValidationVisible() && !metadata.stringFormatId">
+		            <label class="control-label">Text Length Range?</label>
+		
+		            <div class="controls">
+		                <div>
+		                    <input type="number" name="minLength" min="1" placeholder="Min Length"
+		                           ng-disabled="!metadata.hasMinLength"
+		                           ng-model="metadata.minLength" ui-validate="'validateMinLength($value)'"
+		                           ui-validate-watch="'maxLength'">
+		                    <label class="checkbox" style="vertical-align: middle;display: inline-block">
+		                        <input type="checkbox" ng-checked="metadata.hasMinLength"
+		                               ng-click="toggleValue(metadata,'hasMinLength')"> Has Minimum Length
+		                    </label>
+		                </div>
+		                <div style="margin-top: 5px">
+		                    <input type="number" name="maxLength" min="1" placeholder="Max Length"
+		                           ng-disabled="!metadata.hasMaxLength"
+		                           ng-model="metadata.maxLength" ui-validate="'validateMaxLength($value)'"
+		                           ui-validate-watch="'minLength'">
+		                    <label class="checkbox" style="vertical-align: middle;display: inline-block">
+		                        <input type="checkbox" ng-checked="metadata.hasMaxLength"
+		                               ng-click="toggleValue(metadata,'hasMaxLength')"> Has Maximum Length
+		                    </label>
+		                </div>
+		                <div style="display: inline-block;margin-top: 10px">
+		                    <span class="alert alert-danger"
+		                          ng-show="form.maxLength.$error.validator || form.minLength.$error.validator"
+		                          style="display: inline-block;">Max length must be greater than min length.</span>
+		
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</tab>
+		
+		<tab ng-show="calculatedVisible()" heading="Computed" style="overflow-y: auto;max-height: 500px">
+		    <div style="overflow-y: auto;height: 400px">
+		        <div class="control-group" ng-if="calculatedVisible()">
+		            <label class="control-label">Computed Value?</label>
+		
+		            <div class="controls">
+		                <input type="checkbox" ng-checked="metadata.isCalculatedValue"
+		                       ng-click="toggleValue(metadata,'isCalculatedValue')">
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="metadata.isCalculatedValue">
+		            <label class="control-label">Value Expression</label>
+		
+		            <div class="controls">
+		                <textarea style="resize: vertical" ng-model="metadata.calculatedExpression"
+		                          placeholder="Value Expression"
+		                          class="input-xxlarge" rows="2" maxlength="10000"></textarea>
+		                           <div expression-instructions data-is-condition="false"></div>
+		            </div>
+		        </div>
+		    </div>
+		</tab>
+		
+		<tab ng-show="conditionalVisible()" heading="Conditional" style="overflow-y: auto;max-height: 500px">
+		    <div style="overflow-y: auto;height: 400px">
+		        <div class="control-group" ng-if="conditionalVisible()">
+		            <label class="control-label">Show based on a condition?</label>
+		
+		            <div class="controls">
+		                <input type="checkbox" ng-checked="metadata.hasEnabledExpression"
+		                       ng-click="toggleValue(metadata,'hasEnabledExpression')">
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if="metadata.hasEnabledExpression">
+		            <label class="control-label">Show Condition</label>
+		
+		            <div class="controls">
+		                <textarea style="resize: vertical" ng-model="metadata.enabledExpression" placeholder="Expression"
+		                          class="input-xxlarge" rows="2" maxlength="1500"></textarea>
+		                <div is-condition="true" expression-instructions></div>
+		            </div>
+		        </div>
+		    </div>
+		</tab>
+		
+		<tab ng-show="widgetTypeVisible()" heading="Terminology" style="overflow-y: auto;max-height: 500px">
+		    <div style="overflow-y: auto;height: 400px">
+		        <div terminology-tags value-def-id="element.elementSummary.valueDefSummary.id"
+		             tags='element.elementSummary.valueDefSummary.terminologyTags'
+		             style="margin-left: 30px;margin-top: 20px;"></div>
+		    </div>
+		</tab>
+		
+		<tab heading="Advanced" style="overflow-y: auto;max-height: 500px">
+		    <div style="overflow-y: auto;height: 400px">
+		        <div class="control-group" ng-if="deIdentifyVisible()">
+		            <label class="control-label">De-Identify on Export?</label>
+		
+		            <div class="controls">
+		                <input type="checkbox" ng-checked="element.elementSummary.valueDefSummary.deIdentifyStrategyId==2"
+		                       ng-click="updateDeIdentifyStrategy(element.elementSummary.valueDefSummary)">
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if='widgetTypeVisible()'>
+		            <label class="control-label">Auto Populate</label>
+		
+		            <div class="controls">
+		                <div query-lookup query-id="element.elementSummary.valueDefSummary.queryId"
+		                     selected-item="element.elementSummary.valueDefSummary.query"
+		                     dialog-changed="dialogChanged"
+		                     selectable-types="[2,3]"></div>
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if='variableNameVisible()'>
+		            <label class="control-label">Variable Name</label>
+		
+		            <div class="controls">
+		                <input type="text" placeholder="Variable Name"
+		                       ng-model="element.elementSummary.valueDefSummary.variableName">
+		            </div>
+		        </div>
+		
+		        <div class="control-group" ng-if='placeholderVisible()'>
+		            <label class="control-label">Placeholder</label>
+		
+		            <div class="controls">
+		                <input type="text" placeholder="Placeholder"
+		                       ng-model="element.elementSummary.valueDefSummary.placeholder">
+		            </div>
+		        </div>
+		
+		        <div class="control-group">
+		            <label class="control-label">Description</label>
+		
+		            <div class="controls">
+		                <textarea style="resize: vertical" ng-model="element.elementSummary.valueDefSummary.description"
+		                          class="input-xxlarge" rows="5" maxlength="1499"></textarea>
+		            </div>
+		        </div>
+		    </div>
+		</tab>
+		<tab ng-show="widgetTypeVisible()"  heading="Financial" style="overflow-y: auto;max-height: 500px">
+		<div style="overflow-y: auto;height: 400px">
+			<div class="control-group" >
+			<label class="control-label">Cost</label>
+				<div class="controls">  								
+		  			<input style="width:150px;" type="text"   ng-model="element.elementSummary.valueDefSummary.costVal" ng-keydown="numberCheck($event)"  ng-blur="dollarValidation()" autofocus/>	
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"> In-Voices Required</label>
+				 <div class="controls">
+                 	<input type="checkbox" ng-model="c">
+                 </div>
+			</div>
+			<div class="control-group" style="overflow-y: auto; max-height: 350px" scroll-bottom item-to-watch="effectiveDates">
+				<table class="table table-bordered table-condensed;" style="width:600px">
+					<thead>
+						<tr>
+				    		<th style="white-space: nowrap">Effective Start Date</th>
+							<th style="white-space: nowrap">Effective End Date</th>
+							<th style="white-space: nawrap">Cost-USD</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr >
+		    				<td>
+		        				<input style="width:150px;" data-fix type="date" type="date" required placeholder="Start Date" date="finance.startDate" class="formattedValueInput"/>   
+							</td>
+							<td>
+								<input style="width:150px;" date-fix type="date" type="date" required placeholder="End Date" date="finance.endDate" class="formattedValueInput"/>
+							</td>
+							<td>
+		    					<input style="width:150px;" ng-model="a" type="number"  ng-blur="d">
+		           			</td>
+						</tr>
+		       		</tbody>
+		   		</table>
+			</div>
+			<div class="control-group"  style="margin-top: 10px">
+				<button class="btn btn-info btn-mini" ng-click="">Add Row</button>
+		   	</div>
+		</div>
+		</tab>
+		</tabset>
+		<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+		</form>
+		</div>
+		<div class="modal-footer">
+		    <button class="btn btn-primary" disabled="true" ng-show="processing">Saving...</button>
+		    <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()"
+		            ng-hide="processing">Save
+		    </button>
+		    <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+		</div>
+		</div>

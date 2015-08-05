@@ -1,0 +1,27 @@
+<div xmlns="http://www.w3.org/1999/html">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body" style="overflow-y: inherit;position: absolute; bottom: 75px;left: 15px;right: 15px;top:75px;max-height: inherit;">
+        <div ng-show="processing" style="height: 450px">
+            <i class="fa fa-spinner fa-spin" style="margin: 3px"></i>
+            <span>Loading...</span>
+        </div>
+        <div  ng-style="{visibility:processing?'hidden':'inherit'}" style="position: absolute; bottom: 0px;left: 0px;right: 0px;top:0px; display: -webkit-flex;-webkit-flex-direction:column">
+            <div style="-webkit-flex:1;position: relative" >
+                <div ng-grid="gridOptions" class="gridStyle" style="position: absolute;top:0;left:0;bottom: 0;right: 0"></div>
+            </div>
+            <div style="height: 30%;" ng-show="showDocBrowser()" class="docBrowser">
+                <div style="padding: 10px" >{{doc()}}</div>
+            </div>
+            <div style="margin-top: 10px; margin-bottom: 0px" class="alert alert-info">
+                Disclaimer:  Data coming from EDW is loaded on a periodic basis and does not represent up to the minute or validated data.
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="position: absolute; bottom: 0px;left: 0px;right: 0px">
+        <a class="btn btn-primary" ng-disabled="processing" ng-show="canSelect()" ng-click="select()">Select</a>
+        <a class="btn" ng-click="close()" ng-show="!processing">Cancel</a>
+        <a class="btn" ng-disabled="processing" ng-show="processing">Searching...</a>
+    </div>
+</div>

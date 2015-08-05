@@ -1,0 +1,143 @@
+.surveyMenuHeader{
+    font-family: 'EB Garamond', serif;
+    color: white;
+    font-size: 80px;
+    line-height: 85px;
+}
+
+.surveyMenuSubHeader{
+    font-family: 'EB Garamond', serif;
+    color: white;
+    font-size: 60px;
+    line-height: 65px;
+}
+
+.surveyMenuSmallHeader{
+    font-family: 'EB Garamond', serif;
+    color: white;
+    font-size: 40px;
+    line-height: 43px;
+}
+
+.surveyFormHeader{
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.surveyFormHeader small{
+    font-size: 28px;
+    font-style: italic;
+}
+
+.surveyMenuItem{
+    font-family: 'EB Garamond', serif;
+    color: white;
+    border-radius: 7px;
+    border: solid white 2px;
+    padding: 15px;
+    width: 500px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: left;
+    cursor: pointer;
+
+}
+
+.surveyMenuItem .itemHeader{
+    font-size: 30px;
+    line-height: 32px;
+    margin-bottom: 10px;
+}
+
+.surveyMenuItem .itemSubHeader{
+    font-size: 20px;
+    line-height: 22px;
+}
+.surveyMenuItem .itemButton{
+    font-size: 60px;
+    line-height: 65px;
+
+    margin-left: 10px;
+}
+
+
+.surveyMenuItem:hover{
+    background-color: #83b83f;
+}
+
+.surveyElementHeader{
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 16px;
+    background: #0f4181;
+}
+
+.surveyElementSubForm,.surveyElementDescription,.surveyElementSubPage{
+    line-height: 24px;
+    font-weight: bold;
+    font-size: 14px;
+    background: #0f4589;
+}
+
+
+.formattedValueLink{
+    color: #ffffff;
+}
+
+.formattedValueLink:hover{
+    color: #6aa02d;
+}
+
+.formattedValueLink:active{
+    color: #6aa02d;
+}
+
+.formattedValueAnswer{
+    color: #ffffff;
+}
+
+
+.formattedValueAnswer:active{
+    color: #6aa02d;
+}
+
+
+.formattedValueAnswer:hover{
+    color: #6aa02d;
+}
+
+.modal-header{
+    background-color: #7DB03D;
+    border-radius: 5px 5px 0px 0px;
+    color: #ffffff;
+}
+
+.descriptionCaption{
+    font-weight: bold;
+}
+
+.ratingStar{
+    color: #ffffff  ;
+    cursor: pointer;
+    font-size: 14pt;
+    margin-right: 2px;
+}
+
+.ratingStar:hover{
+    font-weight: bolder;
+}
+
+.oddRow{
+    background: #0F61A5;
+}
+
+.formTable, .formTable tr,.formTable td, .formTable th{
+    border-color: rgb(15, 95, 166);
+    border-style: dotted;
+    border-width: 1px;
+}

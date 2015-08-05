@@ -1,0 +1,81 @@
+<div class="container-fluid">
+    <div class="pull-right" style="margin-top: -5px" x-ng-show="!processing">
+        <div style="clear: both ;float: right;">
+            <ul class="breadcrumb">
+                <li><i x-ng-class="filterIcon"></i> Study<span class="divider">=</span></li>
+                <li class="dropdown"><a href="" class="dropdown-toggle">{{selectedStudy()}}</a>
+                    <ul class="dropdown-menu" style="right: 0;left: inherit">
+                        <li x-ng-repeat="i in studyDefs | orderBy:'name'">
+                            <a href="" x-ng-click="selectStudy(i)">{{i.name}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="btn-group" style="margin-top:3px;clear:both;float:right">
+        	<button class="btn" ng-click="showHideGraph()" ng-class="{active: showGraph}" ng-disabled="!canExport()">Show Graphs</button>
+            <a blob-url data-data="exportData"  ng-disabled="!canExport()" class="btn btn-default" download="export.csv">Export</a>
+            <button type="button" class="btn dropdown-toggle" ng-disabled="!hasOutline()">
+                {{ studyDefFilters.selectedFilter? studyDefFilters.selectedFilter.name:'Filters' }} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" style="left: auto;right: 0">
+                <li data-ng-repeat="item in studyDefFilters.filters"><a href="#" data-ng-click="selectFilter(item,$event)">{{item.name}}</a></li>
+                <li class="divider" data-ng-show="studyDefFilters.filters.length > 0"></li>
+                <li><a href="#" data-ng-click="editFilters()">Edit Filters...</a></li>
+            </ul>
+        </div>
+    </div>
+    <ul class="breadcrumb">
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+    </ul>
+    <div x-loading-control x-not-loading-title="title" x-is-loading="processing"></div>
+    <div class="gridContainer" style="display: -webkit-flex;-webkit-flex-direction:row;" ng-style="{visibility:processing?'hidden':'visible'}">
+        <div class="gridStyle" style="-webkit-flex:1;max-width: 275px;display:-webkit-flex;-webkit-flex-direction:column ">
+            <div class="dividerHeader">
+                <span x-ng-show="!loadingOutline">{{selectedStudy()}}&nbsp;</span>
+                <span x-ng-show="loadingOutline">Loading...</span>
+            </div>
+            <ul class="nav nav-list" style="-webkit-flex:1;overflow-y: auto;margin-top: 3px">
+                <li x-ng-repeat="item in outline" x-ng-class="{active: selectedItem.rowId==item.rowId}" x-ng-show="!item.hide">
+                    <a href="" ng-click="outlineItemSelected(item,$event)" ng-style="getIndent(item)">
+                    	<i ng-class="getFolderIcon(item)" style="margin-top: 3px; cursor: pointer; width: 16px;"></i>{{item.caption}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left: 5px; -webkit-flex: 1; display: -webkit-flex; -webkit-flex-direction: column;">
+        	<div ng-grid="gridOptions" class="gridStyle" style="-webkit-flex: 1;"></div>
+        	<div class="gridStyle" style="-webkit-flex: 1; display: -webkit-flex; -webkit-flex-direction:row;" ng-if="showGraph">
+	        	<form style="-webkit-flex:1; max-width: 275px; padding-left: 15px;">
+	        		<fieldset>
+	        			<legend>Configure the Graph</legend>
+	        			<label>Select the graph type</label>
+	        			<select ng-model="chartConfig.options.chart.type" style="text-transform: capitalize;">
+	        				<option>bar</option>
+	        				<option>column</option>
+	        				<option>pie</option>
+	        				<option>scatter</option>
+	        			</select>
+	        		</fieldset>
+	        		<fieldset ng-show="chartConfig.options.chart.type=='bar' || chartConfig.options.chart.type=='column' || chartConfig.options.chart.type=='pie'">
+	        			<label>Select the column for category</label>
+	        			<select ng-model="columnToPlot" ng-options="c.name for c in result.columns | filter: filterValidWidgetType" ng-change="plotGraph(columnToPlot)"></select>
+	        		</fieldset>
+	        		<fieldset ng-show="chartConfig.options.chart.type=='bar' || chartConfig.options.chart.type=='column'">
+	        			<label>Select an additional column to compare</label>
+	        			<select ng-model="columnToCompare" ng-options="c.name for c in result.columns | filter: filterSameWidgetType" ng-change="compareColumn(columnToCompare)"></select>
+	        		</fieldset>
+	        		<fieldset ng-show="chartConfig.options.chart.type=='scatter'">
+	        			<label>Select the column for X</label>
+	        			<select ng-model="columnForX" ng-options="c.name for c in result.columns | filter:{defaultWidgetTypeId: 4}:true"></select>
+	        		</fieldset>
+	        		<fieldset ng-show="chartConfig.options.chart.type=='scatter' && columnForX">
+	        			<label>Select the column for Y</label>
+	        			<select ng-model="columnForY" ng-options="c.name for c in result.columns | filter:{defaultWidgetTypeId: 4}:true" ng-change="plotScatter(columnForX, columnForY)"></select>
+	        		</fieldset>
+	        	</form>
+				<highchart style="-webkit-flex: 1;" config="chartConfig"></highchart>
+        	</div>
+        </div>
+    </div>
+</div>

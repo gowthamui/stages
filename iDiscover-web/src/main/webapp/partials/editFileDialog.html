@@ -1,0 +1,46 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="$parent.form" ng-submit="save()">
+            <div class="control-group">
+                <label class="control-label">Name</label>
+                <div class="controls">
+                    <input type="text" ng-model="data.name" required placeholder="File Name">
+                </div>
+            </div>
+            <div>
+                <label class="control-label">File Type</label>
+                <div class="controls">
+                    <label class="radio" ng-show="data.hasExisting">
+                        <input type="radio" ng-model="data.fileType" value="existing">Use Existing<br>
+                    </label>
+                    <label class="radio">
+                        <input type="radio" ng-model="data.fileType" value="reference">Reference URL<br>
+                    </label>
+                    <label class="radio">
+                        <input type="radio" ng-model="data.fileType" value="upload">Upload File
+                    </label>
+                </div>
+            </div>
+            <div class="control-group" ng-show="data.fileType=='reference'">
+                <label class="control-label">File Path</label>
+                <div class="controls">
+                    <input type="text" ng-model="data.filePath" ng-required="data.fileType=='reference'" placeholder="File Path">
+                </div>
+            </div>
+            <div class="control-group" ng-show="data.fileType=='upload'">
+                <label class="control-label">Upload File</label>
+                <div class="controls">
+                    <input type="file" file-changed="selectedFileChangedDelegate" file="selectedFile" placeholder="Upload File">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" >
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class="btn btn-primary" ng-click="save()" ng-disabled="$parent.form.$invalid  || processing">Save</button>
+        <button class="btn" ng-click="close()" ng-disabled="processing">Cancel</button>
+    </div>
+</div>

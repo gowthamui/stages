@@ -1,0 +1,23 @@
+<div>
+    <i style="margin-top: 8px; cursor: pointer" class="fa fa-pencil-square-o"
+       ng-click="togglePopupVisible($event)"></i>
+
+
+    <div ng-if="popupVisible" style="margin-top: 10px;position: relative; display: inline">
+        <div style="position: absolute">
+            <ul class="dropdown-menu" style="display: inline; width: 500px;height: 350px;overflow-y: auto; overflow-x:hidden">
+                <li ng-if="loadingElements"><a tabindex="-1" href="#">Loading...</a></li>
+                <li ng-repeat="element in elements">
+                    <a ng-click="itemSelected(element,$event)">
+                        <div ng-style="getIndent(element)">
+                            <i ng-class="getFolderClass(element)" style="margin-right: 3px"/>
+                            <input ng-show="canSelectElement(element)" type="checkbox" ng-checked="isChecked(element)" style="margin-left: 2px;margin-top:-3px;margin-right: 2px">
+                            <span style="white-space: normal">{{element.elementSummary.valueDefSummary.name}}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <span style="margin-right: 5px">{{elementName}}</span>
+</div>

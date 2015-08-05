@@ -1,0 +1,62 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="c.form" ng-submit="save()">
+            <div class="control-group">
+                <label class="control-label">Question</label>
+                <div class="controls" style="padding-top: 5px">
+                    <span select-form-def-element form-def-id="formDefId" element-id="item.elementId" widget-type-id="widgetTypeId"></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Header</label>
+                <div class="controls">
+                    <textarea ng-model="item.header" rows="3" style="width:80%" ></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Signature Header</label>
+                <div class="controls">
+                    <textarea ng-model="item.signatureHeader" rows="3" style="width:80%" ></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Printed Name Header</label>
+                <div class="controls">
+                    <textarea ng-model="item.printedNameHeader" rows="3" style="width:80%" ></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Hide Printed Name</label>
+                <div class="controls">
+                    <input type="checkbox" ng-checked="item.hidePrintedName" ng-click="toggleHidePrintedName()">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Footer</label>
+                <div class="controls">
+                    <textarea ng-model="item.footer" rows="3" style="width:80%" ></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Footer Question</label>
+                <div class="controls" style="padding-top: 5px">
+                    <span select-form-def-element form-def-id="formDefId" element-id="item.footerElementId" widget-type-id="footerElementWidgetTypeId"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class="btn btn-primary" ng-disabled="$parent.form.$invalid  || processing" ng-click="save()">{{actionButtonTitle}}</button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

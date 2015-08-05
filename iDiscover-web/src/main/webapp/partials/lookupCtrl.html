@@ -1,0 +1,21 @@
+<span>
+    <span class="formattedValueLink" ng-show="isLoading">Loading...</span>
+    <span ng-show="!isLoading">
+        <div ng-if="usePopup" style="display: inline-block">
+            <a href="#" ng-click="togglePopupVisible($event)" class="formattedValueAnswer">{{ getLookupCaption() }}</a   >
+            <a href="#" ng-click="togglePopupVisible($event)" ng-if="getLookupCaption(valueSummary.lookupValues)==null || getLookupCaption(valueSummary.lookupValues).length==0"
+               class="formattedValueLink">{{defaultCaption}}</a>
+        </div>
+        <div ng-show="!usePopup" style="display: inline-block">
+            <select required class="input-large"
+                    ng-model="selectedId"
+                    ng-change="itemChanged()"
+                    ng-options="i.id as i.name for i in items">
+            </select>
+            <div ng-show="selectedOption().allowsText==1">
+                <span>{{selectedOption().name}}: </span>
+                <input type="text" class="input-medium" ng-model-onblur ng-change="changeOther($event)" ng-model="selectedOther">
+            </div>
+        </div>
+    </span>
+</span>

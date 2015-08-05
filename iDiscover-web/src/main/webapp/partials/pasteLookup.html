@@ -1,0 +1,52 @@
+<div xmlns="http://www.w3.org/1999/html">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+
+        <form class="form-horizontal" name="$parent.form">
+            <div class="control-group" ng-show="parentItem!=null">
+                <label class="control-label">Paste under current item?</label>
+                <div class="controls">
+                    <input type="checkbox" ng-checked="item.pasteUnderCurrent">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Format</label>
+                <div class="controls">
+                    <select required
+                            ng-model="item.format"
+                            ng-options="i.id as i.name for i in formats">
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Delimiter</label>
+                <div class="controls">
+                    <select required
+                            ng-model="item.delimiter"
+                            ng-options="i.id as i.name for i in delimiters">
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group" >
+                <label class="control-label">Items To Paste</label>
+                <div class="controls">
+                    <textarea style="width: 90%;height: 300px" data-ng-model="item.pastedItems" required>
+
+                    </textarea>
+                </div>
+            </div>
+
+
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+            <input type="submit" style="visibility: hidden">
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-primary" ng-disabled="form.$invalid"  ng-click="select()">Enter</a>
+        <a class="btn" ng-click="close()" >Cancel</a>
+    </div>
+</div>

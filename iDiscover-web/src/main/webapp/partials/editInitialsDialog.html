@@ -1,0 +1,24 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body" style="overflow-y: inherit;">
+        <form class="form-horizontal" name="$parent.form" ng-submit="save()">
+            <div class="control-group">{{description}}</div>
+            <div class="signaturePad" style="height: 200px">
+                <canvas width="448" height="200" initials-pad initial-delegate="initialDelegate"></canvas>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">
+            {{alert.msg}}
+        </alert>
+        <button style="float: left;" class="btn" ng-click="clear()" ng-hide="processing">Clear</button>
+
+        <button class="btn btn-primary" ng-disabled="form.$invalid  || processing" ng-click="save()">
+            {{actionButtonTitle}}
+        </button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

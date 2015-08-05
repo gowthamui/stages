@@ -1,0 +1,41 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="$parent.form" ng-submit="save()">
+            <div class="control-group">
+                <label class="control-label">Element</label>
+                <div class="controls" style="padding-top: 5px">
+                    <span select-form-def-element form-def-id="formDefId" element-id="item.elementId" widget-type-id="widgetTypeId"></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Header</label>
+                <div class="controls">
+                    <textarea ng-model="item.questionHeader" rows="3" style="width:80%" ></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Yes Text</label>
+                <div class="controls">
+                    <textarea ng-model="item.yesAnswer" rows="3" style="width:80%" ></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">No Text</label>
+                <div class="controls">
+                    <textarea ng-model="item.noAnswer" rows="3" style="width:80%" ></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class="btn btn-primary" ng-disabled="form.$invalid  || processing" ng-click="save()">{{actionButtonTitle}}</button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

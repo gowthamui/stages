@@ -1,0 +1,42 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="$parent.form" ng-submit="save()">
+            <div class="control-group" ng-if="clearValueVisible()">
+                <label class="control-label">Clear Value?</label>
+                <div class="controls">
+                    <input type="checkbox" ng-checked="data.clearValue" ng-click="toggleClearValue()" >
+
+                </div>
+            </div>
+            <div class="control-group" ng-if="notAvailableVisible()">
+                <label class="control-label">Mark as 'Not Available'</label>
+                <div class="controls">
+                    <input type="checkbox" ng-checked="data.notAvailable" ng-click="toggleNotAvailable()" >
+
+                </div>
+            </div>
+            <div class="control-group" ng-if="availableVisible()">
+                <label class="control-label">Mark as 'Available'</label>
+                <div class="controls">
+                    <input type="checkbox" ng-checked="data.available" ng-click="toggleAvailable()" >
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Comments</label>
+                <div class="controls">
+                    <textarea ng-model="data.comments" rows="7" style="width:80%" ></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class="btn btn-primary" ng-disabled="form.$invalid  || processing" ng-click="save()">{{actionButtonTitle}}</button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

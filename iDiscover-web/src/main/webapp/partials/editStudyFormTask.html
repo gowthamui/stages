@@ -1,0 +1,76 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="$parent.form" style="overflow-y: auto">
+            <tabset>
+
+                <tab heading="Task Information">
+                    <div style="overflow-y: auto;height: 400px">
+                        <div class="control-group">
+                            <label class="control-label">Title</label>
+                            <div class="controls">
+                                <input type="text" class="input-xlarge" required placeholder="Title" ng-model="item.title">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Status</label>
+                            <div class="controls">
+                                <select ng-model="item.taskStatusId" required ng-options="i.id as i.name for i in taskStatuses"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Assigned To</label>
+                            <div class="controls">
+                                <select ng-model="item.assignedToUserId" required ng-options="i.id as i.lastName+', '+i.firstName+' ('+i.id+')' for i in users | orderBy:['lastName','firstName']"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Description</label>
+                            <div class="controls">
+                                <textarea ng-model="item.description" rows="5" style="width:80%" ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Comments</label>
+                            <div class="controls">
+                                <textarea ng-model="item.comments" rows="5" style="width:80%" ></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="History" ng-show="item.history.length>0">
+                    <div style="overflow-y: auto;height: 400px">
+                        <table class="table table-condensed table-bordered" style="margin-bottom: 0px">
+                            <thead>
+                            <tr>
+                                <th>Assigned To</th>
+                                <th>Modified On</th>
+                                <th>Status</th>
+                                <th>Comments</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="historyItem in item.history | orderBy:'-createdDts'">
+                                <td>{{historyItem.assignedToUserId}}</td>
+                                <td>{{historyItem.createdDts | date:"short"}}</td>
+                                <td>{{historyItem.taskStatusSummary.name}}</td>
+                                <td><pre>{{historyItem.comments}}</pre></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+            </tabset>
+
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" disabled="true" ng-show="processing">Saving...</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()" ng-hide="processing">Save</button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

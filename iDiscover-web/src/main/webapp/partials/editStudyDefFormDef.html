@@ -1,0 +1,54 @@
+<div hide-modal should-show="dialogVisible">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body" >
+
+                <form class="form-horizontal" name="$parent.form" >
+            <div class="control-group">
+                <label class="control-label">Name</label>
+                <div class="controls">
+                    <input type="text" required placeholder="Name" ng-model="item.formDefSummary.name" ng-change="nameChange()" autofocus>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Variable Name</label>
+                <div class="controls">
+                    <input type="text" placeholder="Variable Name" ng-model="item.formDefSummary.variableName">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Form Type</label>
+                <div class="controls">
+                    <select required ng-model="item.formTypeSummary.id" ng-options="i.id as i.name for i in formTypes">
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group" ng-show="!isNew">
+                <label class="control-label">Schedule</label>
+                <div class="controls">
+                    <div notification-editor study-def-id="item.studyDefId" notification-type-id="1" src-study-def-form-def-id="item.id" dialog-changed="dialogChanged"></div>
+                </div>
+            </div>
+
+            <div class="control-group" ng-show="isNew">
+                <label class="control-label">Use Template?</label>
+                <div class="controls">
+                    <select ng-model="item.formDefTemplateId"
+                            ng-options="i.id as i.name for i in formDefs | orderBy:'name'">
+                        <option value="">-- No Template --</option>
+                    </select>
+                </div>
+            </div>
+
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        </form>
+
+    </div>
+    <div class="modal-footer" >
+        <button class="btn btn-primary" disabled="true" ng-show="processing">Saving...</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()" ng-hide="processing">Save</button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<div style="display:-webkit-flex;-webkit-flex-direction:column;">
+    <div style="-webkit-flex:1" class="studyNavigatorHeader">
+        <i class="fa fa-spinner fa-spin pull-left" style="margin: 3px;margin-top: 7px;" ng-if="processing"></i>
+        <div class="pull-right" style="margin-right: 5px;vertical-align: middle" ng-if="syncing">
+            <span style="font-style: italic;font-size: 0.8em"></span>
+            <i class="fa fa-spinner fa-spin" style="margin: 3px;margin-top: 7px;" ></i>
+        </div>
+        <div style="padding: 5px">{{title}}</div>
+    </div>
+
+    <div>
+        <div ng-repeat="item in fields"  style="clear: both;" class="participantScheduleItem" ng-show="!processing" >
+            <table border="0" style="width: 100%">
+                <tr>
+                    <td>
+                        <div style="margin-top: 7px;margin-right: 10px;">{{item.displayName}}</div>
+                    </td>
+                    <td style="min-width: 100px">
+                        <div class="pull-right" style="text-align: right;margin-top: 7px;margin-right: 3px">
+                            <div style="font-size: 0.9em;" ng-style="getFormattedStyle(item)">{{getFormattedValue(item)}}</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="-webkit-flex:1;overflow: auto">
+        <div ng-bind-html="doc()" style="padding: 10px" ></div>
+    </div>
+</div>

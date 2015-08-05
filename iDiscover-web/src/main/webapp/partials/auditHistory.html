@@ -1,0 +1,31 @@
+<div>
+    <div class="modal-header">
+        <div loading-control not-loading-title="title" is-loading="processing" ></div>
+    </div>
+    <div class="modal-body" style="min-height: 300px">
+        <table class="table table-condensed table-bordered" ng-if="!processing">
+            <thead>
+            <tr>
+                <th>Modified By</th>
+                <th>Modified On</th>
+                <th>Not Available?</th>
+                <th>Value</th>
+                <th>Comments</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr ng-repeat="prop in auditHistory.items | orderBy:'-modifiedOn'">
+                <td>{{prop.modifiedBy}}</td>
+                <td style="width: 200px">{{prop.modifiedOn | date:'medium'}}</td>
+                <td style="text-align: center; width: 30px"><i ng-class="isNotAvailable(prop)"></i></td>
+                <td><span simple-formatted-value value-summary="prop.oldValueSummary" value-def-summary="valueDefSummary"></span><span>&nbsp;</span></td>
+                <td>{{prop.oldValueSummary.comments}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="close()">Close</button>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div>
+    <span ng-if="hasValue()">
+        <div class="signatureBackground" style="min-width: 250px;float: left; cursor: pointer" ng-click="editSignature($event)" >
+            <img ng-src="{{getSignaturePath()}}" style="height:100px;">
+        </div>
+
+        <div  style="float: left; margin-left: 10px">
+            <a href="" class="formattedValueLink" ng-click="editSignature($event)">{{valueSummary.signatureValue.printedName}} (edit)</a>
+            <br>
+            <span class="formattedValueAnswer">Modified On {{valueSummary.modifiedOn | date }}</span>
+        </div>
+    </span>
+    <a href="" ng-if="!hasValue()" ng-click="editSignature($event)"
+       class="formattedValueLink">Enter Signature...</a>
+</div>

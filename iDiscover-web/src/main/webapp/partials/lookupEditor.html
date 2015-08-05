@@ -1,0 +1,34 @@
+<div>
+    <div style="margin-top: 3px" ng-show="loading">
+        <i class="fa fa-spinner fa-spin" style="margin: 3px"></i>
+        <span>Loading...</span>
+    </div>
+    <div style="" ng-show="!loading ">
+        <input class="input-xlarge" placeholder="Add Lookup Item" ui-event="{keyup: 'addLookupValueOnEnter($event)'}" type="text" ng-model="newLookupValue" >
+        <div class="btn-group">
+            <a class="btn btn-small" ng-click="addLookupValue()" ng-disabled="!canAddLookupValue()"><i class="fa fa-plus-circle"></i></a>
+            <a class="btn btn-small" ng-click="addIndentLookupValue()" ng-disabled="!canAddIndentLookupValue()"><i class="fa fa-indent"></i></a>
+            <a class="btn btn-small" ng-click="paste()"><i class="fa fa-paste"></i></a>
+        </div>
+        <div class="btn-group">
+            <a class="btn btn-primary btn-small" ng-click="openLookup()"><i ng-class="searchIcon"/> Load from template</a>
+        </div>
+
+
+        <table border="0" style="margin-top: 8px">
+            <td>
+                <div ng-grid="gridOptions" class="gridStyle" style="width: 600px; height: 305px"></div>
+            </td>
+            <td style="vertical-align: top;text-align: left;">
+                <div class="btn-group btn-group-vertical" style="margin-top: 33px">
+                    <a class="btn btn-small" ng-click="remove()" ng-disabled="!canRemove()"><i class="fa fa-times-circle"></i></a>
+                    <a class="btn btn-small" ng-click="moveLeft()" ng-disabled="!canMoveLeft()"><i class="fa fa-outdent"></i></a>
+                    <a class="btn btn-small" ng-click="moveRight()" ng-disabled="!canMoveRight()"><i class="fa fa-indent"></i></a>
+                    <a class="btn btn-small" ng-click="moveUp()" ng-disabled="!canMoveUp()"><i class="fa fa-arrow-up"></i></a>
+                    <a class="btn btn-small" ng-click="moveDown()" ng-disabled="!canMoveDown()"><i class="fa fa-arrow-down"></i></a>
+
+                </div>
+            </td>
+        </table>
+    </div>
+</div>

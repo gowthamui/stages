@@ -1,0 +1,10 @@
+<span>
+    <span class="formattedValueLink" ng-show="isLoading">Loading...</span>
+    <span ng-show="!isLoading">
+    	<div class="signatureBackground" style="min-width: 100px; min-height: 70px">
+    		<img ng-src="{{getSignaturePath()}}" ng-click="togglePopupVisible($event)" style="height:70px">
+    	</div>
+        <a ng-show="canEdit && !hasValue" href="#" ng-click="togglePopupVisible($event)" class="formattedValueLink">Initial Item...</a>
+        <a ng-show="canEdit && hasValue" href="#" ng-click="togglePopupVisible($event)" class="formattedValueLink">Re-sign...</a>
+    </span>
+</span>

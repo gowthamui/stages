@@ -1,0 +1,18 @@
+<div>
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body" style="overflow-y:inherit;position: absolute; bottom: 75px;left: 15px;right: 15px;top:75px;max-height: inherit;">
+        <div ng-show="processing">
+            <i class="fa fa-spinner fa-spin" style="margin: 3px"></i>
+            <span>Loading...</span>
+        </div>
+        <div ng-show="!processing" ng-grid="gridOptions" class="gridStyle"
+             style="position: absolute; bottom: 0px;left: 0px;right: 0px;top:0px;"> </div>
+    </div>
+    <div class="modal-footer" style="position: absolute; bottom: 0px;left: 0px;right: 0px">
+        <alert style="text-align:left" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class="btn" ng-click="close()" >Close</button>
+    </div>
+</div>
+

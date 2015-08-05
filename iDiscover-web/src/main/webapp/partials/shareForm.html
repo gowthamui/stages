@@ -1,0 +1,77 @@
+<div hide-modal should-show="dialogVisible">
+	<div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body" style="overflow-y:auto;position: absolute; bottom: 75px;left: 15px;right: 15px;top:75px;max-height: inherit;">
+
+        <div loading-control is-loading="loading" ></div>
+
+        <form class="form-horizontal" name="$parent.form" ng-style="{visibility:loading?'hidden':''}">
+            <div class="control-group">
+                <label class="control-label">Email Subject</label>
+                <div class="controls">
+                    <input type="text" placeholder="Subject" class="input-xxlarge" style="width: 98%" ng-model="emailData.emailSubject">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Email From Address</label>
+                <div class="controls">
+                    <input type="email" placeholder="user@imail.org" class="input-xxlarge" style="width: 98%" ng-model="emailData.emailFromAddress">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Email From Display Name</label>
+                <div class="controls">
+                    <input type="text" placeholder="ex: Francis Underwood" class="input-xxlarge" style="width: 98%" ng-model="emailData.emailFromDisplayName">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Email Body</label>
+                <div class="controls">
+                    <textarea type="text" required placeholder="Message Body" class="input-xxlarge" style="height: 200px;width: 98%" ng-model="emailData.emailBody"></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Recipients</label>
+                <div class="controls">
+                    <label class="radio" style="padding-bottom: 5px">
+                        <input type="radio" ng-model="emailData.recipientType" value="link">Anyone with the link
+                    </label>
+                    <label class="radio" style="padding-bottom: 5px">
+                        <input type="radio" ng-model="emailData.recipientType" value="study">Select From Study Participants
+                    </label>
+                    <label class="radio" style="padding-bottom: 5px">
+                        <input type="radio" ng-model="emailData.recipientType" value="manual">Manually Enter
+                    </label>
+
+                    <div ng-show="emailData.recipientType=='link'">
+                        <div>Send Link to: <input type="email" ng-required="emailData.recipientType=='link'" ng-model="emailData.linkRecipient"> </div>
+                    </div>
+                    <div ng-show="emailData.recipientType=='study'">
+                        <div ng-grid="gridOptions" class="gridStyle" style="height: 400px"></div>
+                    </div>
+                    <div ng-show="emailData.recipientType=='manual'">
+                        <textarea type="text" placeholder="Enter email addresses separated by a comma. (example:  kira@gmail.com, stan@gmail.com, ryan@gmail.com)" class="input-xxlarge" style="height: 200px; width: 98%" ng-model="emailData.manualRecipients"></textarea>
+                        <br>
+                        <div style="padding: 5px;margin-top: 10px" class="label label-info">Enter email addresses separated by a comma. (example:  kira@gmail.com, stan@gmail.com, ryan@gmail.com)</div>
+                    </div>
+                </div>
+            </div>
+			<div class="control-group" ng-show="emailData.recipientType!='study'">
+				<label class="control-label">Options</label>
+                <div class="controls">
+					<label class="checkbox" style="padding-bottom: 5px">
+						<input type="checkbox" ng-model="emailData.multipleTimes">Allow this form to be completed multiple times from the same participant
+					</label>
+				</div>
+			</div>
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        </form>
+    </div>
+    <div class="modal-footer" style="position: absolute; bottom: 0px;left: 0px;right: 0px">
+        <button class="btn btn-primary" disabled="disabled" ng-show="processing">Processing...</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()" ng-hide="processing">Send Emails</button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

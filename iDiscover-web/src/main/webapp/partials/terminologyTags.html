@@ -1,0 +1,38 @@
+<div>
+
+    <table class="table table-bordered table-condensed" ng-show="tags.length>0">
+        <thead>
+        <th>Type</th>
+        <th>Value</th>
+        <th style="width: 20px;">&nbsp;</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in tags">
+            <td style="width: 200px">{{p.terminologyTypeSummary.name}}</td>
+            <td><input type="text" ng-model="p.value" class="input-medium"></td>
+            <td style="cursor: pointer;"><i ng-click='deleteItem(p)' class="fa-times"></i></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-bottom:10px;margin-bottom:10px">
+        <table>
+            <tr>
+                <td>Type:</td>
+                <td>&nbsp;</td>
+                <td>
+                    <select ng-model="newTerminologyTypeId" ng-options="i.id as i.name for i in types | orderBy:['name']"></select>
+                </td>
+                <td>&nbsp;</td>
+
+                <td>Value:</td>
+                <td>&nbsp;</td>
+                <td><input type="text" ng-model="newValue" class="input-medium"></td>
+                <td><a class="btn btn-primary" ng-click='addItem()' ng-disabled="!canAddItem()">Add Tag</a></td>
+            </tr>
+
+        </table>
+
+
+    </div>
+</div>

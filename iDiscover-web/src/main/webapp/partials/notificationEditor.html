@@ -1,0 +1,17 @@
+<div>
+    <div ng-show="isLoading" style="margin-top: 4px">
+        <i class="fa fa-spinner fa-spin pull-left" style="margin: 3px"></i>
+        <span>Loading...</span>
+    </div>
+    <div ng-show="!isLoading">
+        <span style="vertical-align: bottom;font-weight: bold">{{ getCaption() }}</span>
+        <a class="btn btn-info btn-mini" ng-show="!hasValue()" ng-click="openSchedule()" style="vertical-align: text-top">
+            <i ng-class="scheduleIcon"></i>
+            <span>Setup Schedule</span>
+        </a>
+        <a class="btn btn-info btn-mini" ng-show="hasValue()" ng-click="openSchedule()" style="vertical-align: text-top">
+            <i ng-class="scheduleIcon"></i>
+            <span>Edit Schedule</span>
+        </a>
+    </div>
+</div>

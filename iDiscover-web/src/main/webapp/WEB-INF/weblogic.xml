@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wls:weblogic-web-app
+        xmlns:wls="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd
+http://xmlns.oracle.com/weblogic/weblogic-web-app
+http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd">
+
+    <!--Uncomment below to swap out jersey versions-->
+    <wls:container-descriptor>
+        <!--<wls:prefer-application-packages>-->
+            <!--&lt;!&ndash;jersey-bundle-*.jar&ndash;&gt;-->
+            <!--<wls:package-name>com.sun.jersey.*</wls:package-name>-->
+            <!--<wls:package-name>com.sun.research.ws.wadl.*</wls:package-name>-->
+            <!--<wls:package-name>com.sun.ws.rs.ext.*</wls:package-name>-->
+
+            <!--&lt;!&ndash;Jackson-*.jar &ndash;&gt;-->
+            <!--<wls:package-name>org.codehaus.jackson.*</wls:package-name>-->
+
+            <!--&lt;!&ndash;jettison-*.jar&ndash;&gt;-->
+            <!--<wls:package-name>org.codehaus.jettison.*</wls:package-name>-->
+
+            <!--&lt;!&ndash;jsr311*.jar&ndash;&gt;-->
+            <!--<wls:package-name>javax.ws.rs.*</wls:package-name>-->
+
+            <!--&lt;!&ndash;asm.jar&ndash;&gt;-->
+            <!--<wls:package-name>org.objectweb.asm.*</wls:package-name>-->
+        <!--</wls:prefer-application-packages>-->
+    </wls:container-descriptor>
+</wls:weblogic-web-app>

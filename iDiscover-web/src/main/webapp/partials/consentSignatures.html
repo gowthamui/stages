@@ -1,0 +1,22 @@
+<div>
+    <a class="btn btn-mini" ng-click="editItem()">Add Signature</a>
+    <table class="table table-bordered table-condensed" style="margin-top: 5px">
+        <thead>
+        <tr>
+            <th>Element</th>
+            <th>Header</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        </thead>
+        <tbody>
+        <tr ng-repeat="prop in consentMetadata.signatureList">
+            <td ng-click="changeElement(prop)"><i class="fa fa-credit-card"></i> {{prop.elementId}}</td>
+            <td>{{prop.header}}</td>
+            <td><i class="fa fa-pencil-square-o" ng-click="editItem(prop)"></i></td>
+            <td><i class="fa fa-times" ng-click="removeItem(prop)"></i></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

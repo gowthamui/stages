@@ -1,0 +1,272 @@
+<div hide-modal should-show="dialogVisible">
+    <div class="modal-header">
+        <h4 ng-bind='title'></h4>
+    </div>
+    <div class="modal-body" style="overflow-y: hidden; max-height: 500px">
+        <form class="form-horizontal" name="$parent.form" ng-submit="save()">
+            <tabset>
+
+                <tab heading="Participant Info">
+                    <div  style="height: 400px; overflow-y: auto">
+                        <div class="control-group" ng-if="item.id>0">
+                            <label class="control-label">Study</label>
+
+                            <div class="controls">
+                                <input type="text" ng-model="item.studyDefSummary.name" disabled class="input-xxlarge">
+                                <br>
+                                <alert style="margin-top: 10px;display: inline-block" class="alert alert-danger" ng-if="studyUnderConstruction()">
+                                    <span>The study '{{item.studyDefSummary.name}}' is <strong>{{item.studyDefSummary.objectStateSummary.objectStateTypeSummary.name}}</strong>.
+                                        <br>Participants entered will be 'TEST' participants.</span>
+                                </alert>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">EMPI<span data-required-indicator is-required="isRequired('item.participantSummary.idTag')"></span></label>
+
+                            <div class="controls">
+                                <input type="text" ng-required="isRequired('item.participantSummary.idTag')" placeholder="ID" ng-model="item.participantSummary.idTag">
+                                <div participant-lookup dialog-changed="dialogChanged" participant="item.participantSummary"></div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">First Name<span data-required-indicator is-required="isRequired('item.participantSummary.firstName')"></span></label>
+
+                            <div class="controls">
+                                <input type="text" ng-required="isRequired('item.participantSummary.firstName')" placeholder="First Name" ng-model="item.participantSummary.firstName">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Middle Name</label>
+
+                            <div class="controls">
+                                <input type="text" placeholder="Middle Name" ng-model="item.participantSummary.middleName">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Last Name<span data-required-indicator is-required="isRequired('item.participantSummary.lastName')"></span></label>
+
+                            <div class="controls">
+                                <input type="text" ng-required="isRequired('item.participantSummary.lastName')" placeholder="Last Name" ng-model="item.participantSummary.lastName">
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <label class="control-label">Date of Birth<span data-required-indicator is-required="isRequired('item.participantSummary.dateOfBirth')"></span></label>
+
+                            <div class="controls">
+                                <input type="date" date-fix ng-required="isRequired('item.participantSummary.dateOfBirth')" placeholder="Date of Birth" date="item.participantSummary.dateOfBirth">
+                            </div>
+                        </div>
+
+                        <div class="control-group" ng-show="optionalFieldVisible('ldapId')">
+                            <label class="control-label">User Id (ldap)<span data-required-indicator is-required="isRequired('item.participantSummary.ldapId')"></span></label>
+
+                            <div class="controls">
+                                <input type="text" ng-required="isRequired('item.participantSummary.ldapId')" placeholder="User Id" ng-model="item.participantSummary.ldapId">
+                            </div>
+                        </div>
+
+                        <div class="control-group" ng-show="optionalFieldVisible('email')">
+                            <label class="control-label">Email<span data-required-indicator is-required="isRequired('item.participantSummary.email')"></span></label>
+
+                            <div class="controls">
+                                <input type="text" ng-required="isRequired('item.participantSummary.email')" placeholder="Email" ng-model="item.participantSummary.email">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Participant Study ID<span data-required-indicator is-required="isRequired('item.participantStudyId')"></span></label>
+
+                            <div class="controls">
+
+                                <input type="text" ng-required="isRequired('item.participantStudyId')" placeholder="Participant Study ID" ng-model="item.participantStudyId">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Secondary Study ID</label>
+
+                            <div class="controls">
+
+                                <input type="text" placeholder="Secondary Study ID" ng-model="item.secondaryStudyId">
+                            </div>
+                        </div>
+						<div class="control-group" ng-show="optionalFieldVisible('encounterNumber')">
+							<label class="control-label">Encounter Number</label>
+							<div class="controls">
+								<input type="text" placeholder="Encounter Number" ng-model="item.encounterNumber">
+							</div>
+						</div>
+						<div class="control-group" ng-show="optionalFieldVisible('facilityId')">
+							<label class="control-label">Facility ID</label>
+							<div class="controls">
+								<input type="text" placeholder="Facility ID" ng-model="item.facilityId">
+							</div>
+						</div>
+						<div class="control-group" ng-show="optionalFieldVisible('screeningId')">
+							<label class="control-label">Screening ID</label>
+							<div class="controls">
+								<input type="text" placeholder="Screening ID" ng-model="item.screeningId">
+							</div>
+						</div>
+                        <div class="control-group">
+                            <label class="control-label">Date participant data initially collected</label>
+
+                            <div class="controls">
+                                <input type="date" date-fix  placeholder="Date Added" date="item.dateAdded">
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Status">
+                    <div style="height: 400px; overflow-y: auto">
+
+                        <div class="control-group">
+                            <label class="control-label">Participant Status<span data-required-indicator is-required="true"></span></label>
+
+                            <div class="controls">
+
+                                <select required ng-model="item.studyEnrollmentStatusSummary.objectStateTypeSummary.id" ng-options="i.id as i.name for i in studyStatuses">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group" ng-if="statusChanged()">
+                            <label class="control-label">Add Comments</label>
+
+                            <div class="controls">
+                                <textarea ng-model="item.statusComments" rows="7" style="width:97%;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Status History</label>
+
+                            <div class="controls">
+
+                                <div ng-show="processingHistory">
+                                    <i class="fa fa-spinner fa-spin pull-left" style="margin: 3px"></i>
+                                    <h6>Loading</h6>
+                                </div>
+
+                                <table class="table table-condensed table-bordered" ng-if="!processingHistory">
+                                    <thead>
+                                    <tr>
+                                        <th>Modified By</th>
+                                        <th>Modified On</th>
+                                        <th>State</th>
+                                        <th>Comments</th>
+                                    </tr>
+
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="prop in history | orderBy:'-modifiedOn'">
+                                        <td>{{prop.updatedByUserId}}</td>
+                                        <td>{{prop.updatedDts | date:'short'}}</td>
+                                        <td>{{prop.objectStateTypeSummary.name}}</td>
+                                        <td><pre>{{prop.comments}}</pre></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </tab>
+                <tab heading="Comments">
+                    <div  style="height: 400px; overflow-y: auto">
+
+                        <div ng-show="processingLogs">
+                            <i class="fa fa-spinner fa-spin pull-left" style="margin: 3px"></i>
+                            <h6>Loading</h6>
+                        </div>
+
+
+                        <div class="control-group" ng-if="!processingLogs">
+                            <label class="control-label">Add Comments</label>
+
+                            <div class="controls">
+                                <textarea ng-model="item.comments" rows="7" style="width:97%;"></textarea>
+                            </div>
+                        </div>
+
+                        <div  style="margin-top: 10px"  class="control-group" ng-if="!processingLogs && logs.length>0">
+                            <label class="control-label">Comment History</label>
+
+                            <div class="controls">
+                                <table class="table table-condensed table-bordered" >
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 80px">Entered By</th>
+                                        <th style="width: 200px">Entered On</th>
+                                        <th>Comments</th>
+                                    </tr>
+
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="prop in logs | orderBy:'-createdDts'">
+                                        <td>{{prop.createdByUserId}}</td>
+                                        <td>{{prop.createdDts | date:'medium'}}</td>
+                                        <td><pre>{{prop.comments}}</pre></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </tab>
+                <tab heading="Participant Study History" ng-show="item.participantSummary.idTag">
+                    <div style="overflow-y: auto;height: 400px">
+                        <span ng-show="loadingHistory">Loading History...</span>
+                        <span ng-show="!loadingHistory && studyHistory.length==0">No Study History Found</span>
+                        <table class="table table-condensed table-bordered" style="margin-bottom: 0px" ng-show="studyHistory.length>0 && !loadingHistory">
+                            <thead>
+                            <tr>
+                                <th>Study </th>
+                                <th>Principal Investigator</th>
+                                <th>Study Status</th>
+                                <th>Creation Date</th>
+                                <th>IRB#</th>
+                                <th>CTN#</th>
+                                <th>First Admit Date</th>
+                                <th>Last Admit Date</th>
+                                <th>Source</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in studyHistory | orderBy:'-studyCreationDate'">
+                                <td>{{item.studyName}}</td>
+                                <td>{{item.primaryInvestigator}}</td>
+                                <td>{{item.studyStatus}}</td>
+                                <td>{{item.studyCreationDate | date:'short'}}</td>
+                                <td>{{item.irbNumber}}</td>
+                                <td>{{item.nationalClinicalTrialsNumber}}</td>
+                                <td>{{item.firstAdmitDate | date:'short'}}</td>
+                                <td>{{item.lastAdmitDate | date:'short'}}</td>
+                                <td>{{item.dataSource}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+
+            </tabset>
+            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)"><span>{{alert.msg}}</span></alert>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" disabled="true" ng-show="processing">Saving...</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()"
+                ng-hide="processing">Save
+        </button>
+        <button class="btn" ng-click="close()" ng-hide="processing">Cancel</button>
+    </div>
+</div>

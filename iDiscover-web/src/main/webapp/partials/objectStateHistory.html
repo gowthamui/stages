@@ -1,0 +1,29 @@
+<div>
+    <div class="modal-header">
+        <div loading-control not-loading-title="title" is-loading="processing"></div>
+    </div>
+    <div class="modal-body" style="min-height: 350px">
+        <table class="table table-condensed table-bordered" ng-if="!processing">
+            <thead>
+            <tr>
+                <th>Modified By</th>
+                <th>Modified On</th>
+                <th>State</th>
+                <th>Comments</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr ng-repeat="prop in history.items | orderBy:'-modifiedOn'">
+                <td>{{prop.updatedByUserId}}</td>
+                <td>{{prop.updatedDts | date:'short'}}</td>
+                <td>{{prop.objectStateTypeSummary.name}}</td>
+                <td>{{prop.comments}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="close()">Close</button>
+    </div>
+</div>

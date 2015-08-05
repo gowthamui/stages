@@ -1,0 +1,7 @@
+<span style="display: block">
+    <span ng-if='hasValue'>
+        <i ng-click='showAuditHistory()' ng-class="auditHistoryIcon" style="cursor: pointer"></i>
+        <span class="auditText">{{formatValue(valueSummary)}}</span>
+        <span class="auditModified">{{modifiedMessage(currentValueSummary)}}</span>
+    </span>
+</span>

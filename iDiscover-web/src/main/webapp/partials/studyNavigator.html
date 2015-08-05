@@ -1,0 +1,28 @@
+<div style="display:-webkit-flex;-webkit-flex-direction:column;" ng-style="processing?{visibility:'hidden'}:null">
+    <div style="-webkit-flex:1" class="studyNavigatorHeader">
+        <i class="fa fa-spinner fa-spin pull-left" style="margin: 3px;margin-top: 7px;" ng-if="processing"></i>
+        <div class="pull-right" style="margin-right: 5px;vertical-align: middle" ng-if="syncing">
+            <span style="font-style: italic;font-size: 0.8em"></span>
+            <i class="fa fa-spinner fa-spin" style="margin: 3px;margin-top: 7px;" ></i>
+        </div>
+        <div style="padding: 5px">{{title}}</div>
+    </div>
+
+
+    <div style="-webkit-flex:1;overflow: auto">
+
+        <div ng-repeat="item in items"  style="clear: both;" class="studyNavigatorItem" ng-class="isSelected(item)" ng-show="!item.hide" >
+            <div ng-style="getIndent(item)">
+                <i ng-class="getFolderIcon(item)"  class="pull-left" style="margin-top: 3px;cursor: pointer" ng-click="toggleFolder(item)"></i>
+                <div style="margin-left: 20px">
+                    <div class="pull-right" style="text-align: right;" ng-show="!item.tableName=='SUMMARY'">
+                        <span style="font-weight: bold; font-size: 0.8em">{{getStatusLabel(item)}}</span>
+                        <i ng-class="getIcon(item)" style="vertical-align: middle"></i>
+                    </div>
+                    <div><a ng-click="goto(item,$event);" style="cursor: pointer;">{{item.caption}}</a></div>
+                    <div style="font-style: italic;font-size: 0.75em">{{getSubTitle(item)}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

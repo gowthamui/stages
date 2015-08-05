@@ -1,0 +1,16 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner" style="min-width: 850px">
+        <div class="container-fluid">
+            <img ng-click="goHome()" src="../images/ResearchDocBlue.png" style="height: 28px; margin-top: 6px; cursor: pointer;">
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                </ul>
+                <div class="nav pull-right">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loadingBar" ng-class="{open:isNavigating,closed:!isNavigating}">
+        <span>{{ loadingText() }}</span>
+    </div>
+</div>
